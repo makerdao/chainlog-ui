@@ -5,27 +5,46 @@
     </head>
     <body>
         <script>
-const call = (params, callback) => {
+const chainlog = "0xdA0Ab1e0017DEbCd72Be8599041a2aa3bA7e740F";
+const hex2a = hexx => { // adapted from https://stackoverflow.com/a/3745677/15857007
+  const hex = hexx.toString();
+  let str = '';
+  for (let i = 0; i < hex.length; i += 2) {
+    const ch = hex.substr(i, 2);
+    if (ch === '00') continue;
+    str += String.fromCharCode(parseInt(ch, 16));
+  }
+  return str;
+}
+const call = (params, callback, param2) => {
   const url = 'https://mainnet.infura.io/v3/633f64adbe364bb88127348d4fcc21ef';
   const options = {
     method: 'POST',
-                  body:   '{"jsonrpc": "2.0", "method": "eth_call", "params": [' + JSON.stringify(params) + ', "latest"], "id": 0 }'
+    body:   '{"jsonrpc": "2.0", "method": "eth_call", "params": [' + JSON.stringify(params) + ', "latest"], "id": 0 }'
   };
   const promise = fetch(url, options);
-  promise.then(response => response.json().then(content => callback(content.result)));
+  promise.then(response => response.json().then(content => callback(content.result, param2)));
 }
 const keys = {}
-const storeKeys = data => {
+const fillKey = (addressHex, keyHex) => {
+  const address = "0x" + addressHex.substring(26);
+  const key = hex2a(keyHex);
+  keys[key] = address;
+}
+const getKeys = data => {
   data = data.substring(2 + 64 * 2);
   for (let i = 0; i < data.length; i += 64) {
-    const datum = data.substring(i, i + 64);
-    keys[datum] = "hello";
+    const keyHex = data.substring(i, i + 64);
+    call({
+      to: chainlog,
+      data: "0x21f8a721" + keyHex // getAddress(bytes32)
+    }, fillKey, keyHex);
   }
 }
 call({
-  to:   "0xdA0Ab1e0017DEbCd72Be8599041a2aa3bA7e740F", // chainlog
-  data: "0x0f560cd7"                                  // list()
-}, storeKeys);
+  to:   chainlog,
+  data: "0x0f560cd7" // list()
+}, getKeys);
 console.log(keys);
         </script>
     </body>
