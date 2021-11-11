@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>MakerDAO Chainlog</title>
+    </head>
+    <body>
+        <script>
+const eth = (method, params, callback) => {
+  const url = 'https://mainnet.infura.io/v3/633f64adbe364bb88127348d4fcc21ef';
+  const options = {
+    method: 'POST',
+    body:   '{"jsonrpc": "2.0", "method": "eth_' + method + '", "params": ' + JSON.stringify(params) + ', "id": 0 }'
+  };
+  const promise = fetch(url, options);
+  promise.then(response => response.json().then(content => callback(content.result)));
+}
+eth('getBlockByNumber', ["0xcf73c8", false], console.log);
+        </script>
+    </body>
+</html>
