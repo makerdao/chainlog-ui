@@ -25,12 +25,20 @@ const call = (params, callback, param2) => {
   const promise = fetch(url, options);
   promise.then(response => response.json().then(content => callback(content.result, param2)));
 }
-const keys = {}
+const table = document.createElement("table");
 const fillKey = (addressHex, keyHex) => {
   const address = "0x" + addressHex.substring(26);
   const key = hex2a(keyHex);
-  keys[key] = address;
+  const row = document.createElement("tr");
+  const cell1 = document.createElement("td");
+  cell1.innerHTML = key;
+  row.append(cell1);
+  const cell2 = document.createElement("td");
+  cell2.innerHTML = address;
+  row.append(cell2);
+  table.append(row);
 }
+document.body.append(table);
 const getKeys = data => {
   data = data.substring(2 + 64 * 2);
   for (let i = 0; i < data.length; i += 64) {
@@ -45,7 +53,6 @@ call({
   to:   chainlog,
   data: "0x0f560cd7" // list()
 }, getKeys);
-console.log(keys);
         </script>
     </body>
 </html>
