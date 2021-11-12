@@ -29,6 +29,7 @@ const table = document.createElement("table");
 const fillKey = (addressHex, keyHex) => {
   const address = "0x" + addressHex.substring(26);
   const key = hex2a(keyHex);
+  const abiUrl = "https://api.etherscan.io/api?module=contract&action=getabi&address=" + address;
   const row = document.createElement("tr");
   const cell1 = document.createElement("td");
   cell1.innerHTML = key;
@@ -36,6 +37,12 @@ const fillKey = (addressHex, keyHex) => {
   const cell2 = document.createElement("td");
   cell2.innerHTML = address;
   row.append(cell2);
+  const cell3 = document.createElement("td");
+  const link = document.createElement("a");
+  link.setAttribute("href", abiUrl);
+  link.innerHTML = "ABI";
+  cell3.append(link);
+  row.append(cell3);
   table.append(row);
 }
 document.body.append(table);
