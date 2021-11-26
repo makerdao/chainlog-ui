@@ -142,6 +142,7 @@ const listKeys = data => {
     copy.innerHTML = "copy";
     copy.addEventListener("click", () => {
       getAddress(keyHex, address => {
+        tdView.innerHTML = address;
         navigator.clipboard.writeText(address);
         const copies = document.getElementsByClassName("copy");
         for (let i = 0; i < copies.length; i++) {
