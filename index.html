@@ -50,6 +50,7 @@ const listKeys = data => {
   viewAll.innerHTML = "view all";
   viewAll.addEventListener("click", () => {
     viewAll.innerHTML = "loading…";
+    viewAll.setAttribute("disabled", true);
     const trs = document.getElementsByClassName("tr");
     for (let i = 0; i < trs.length; i++) {
       const tr = trs[i];
