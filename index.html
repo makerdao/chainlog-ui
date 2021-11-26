@@ -44,6 +44,23 @@ const listKeys = data => {
   const header = document.createElement("tr");
 
   const tdKey = document.createElement("td");
+  const filter = document.createElement("input");
+  filter.setAttribute("placeholder", "filter");
+  const trs = document.getElementsByClassName("tr");
+  filter.addEventListener("keyup", () => {
+    for (let i = 0; i < trs.length; i++) {
+      const tr = trs[i];
+      const key = tr.children[0].innerHTML;
+      const queryLower = filter.value.toLowerCase();
+      const keyLower = key.toLowerCase();
+      if (keyLower.includes(queryLower)) {
+        tr.style.display = "table-row";
+      } else {
+        tr.style.display = "none";
+    }
+    }
+  });
+  tdKey.append(filter);
   header.append(tdKey);
 
   const tdView = document.createElement("td");
