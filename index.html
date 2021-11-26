@@ -6,9 +6,15 @@
         <meta name="referrer" content="origin">
     </head>
     <body>
-        loading…
         <script>
+
+const canvas = document.createElement("div");
+canvas.innerHTML = "loading…";
+document.body.append(canvas);
+
+const endpoint = 'https://mainnet.infura.io/v3/633f64adbe364bb88127348d4fcc21ef';
 const chainlog = "0xdA0Ab1e0017DEbCd72Be8599041a2aa3bA7e740F";
+
 const hex2a = hexx => { // adapted from https://stackoverflow.com/a/3745677/15857007
   const hex = hexx.toString();
   let str = '';
@@ -19,15 +25,16 @@ const hex2a = hexx => { // adapted from https://stackoverflow.com/a/3745677/1585
   }
   return str;
 }
+
 const call = (params, callback) => {
-  const url = 'https://mainnet.infura.io/v3/633f64adbe364bb88127348d4fcc21ef';
   const options = {
     method: 'POST',
     body:   '{"jsonrpc": "2.0", "method": "eth_call", "params": [' + JSON.stringify(params) + ', "latest"], "id": 0 }'
   };
-  const promise = fetch(url, options);
+  const promise = fetch(endpoint, options);
   promise.then(response => response.json().then(content => callback(content.result)));
 }
+
 const getAddress = (keyHex, callback) => {
   call({
     to: chainlog,
@@ -37,11 +44,12 @@ const getAddress = (keyHex, callback) => {
     callback(address);
   });
 }
-const listKeys = data => {
-  document.body.innerHTML = "";
+
+const draw = data => {
+  canvas.innerHTML = "";
   const divVersion = document.createElement("div");
   divVersion.style.height = "50px";
-  document.body.append(divVersion);
+  canvas.append(divVersion);
   call({
     to: chainlog,
     data: "0x54fd4d50" // version()
@@ -170,12 +178,14 @@ const listKeys = data => {
 
     table.append(tr);
   }
-  document.body.append(table);
+  canvas.append(table);
 }
+
 call({
   to:   chainlog,
   data: "0x0f560cd7" // list()
-}, listKeys);
+}, draw);
+
         </script>
     </body>
 </html>
