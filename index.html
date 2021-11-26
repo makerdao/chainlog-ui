@@ -40,13 +40,41 @@ const listKeys = data => {
   document.body.innerHTML = "";
   data = data.substring(2 + 64 * 2);
   const table = document.createElement("table");
+  const header = document.createElement("tr");
+
+  const tdKey = document.createElement("td");
+  header.append(tdKey);
+
+  const tdView = document.createElement("td");
+  const viewAll = document.createElement("button");
+  viewAll.innerHTML = "view all";
+  viewAll.addEventListener("click", () => {
+    const trs = document.getElementsByClassName("tr");
+    for (let i = 0; i < trs.length; i++) {
+      const tr = trs[i];
+      const tds = tr.children;
+      const tdKey = tds[0];
+      const keyHex = tdKey.id;
+      getAddress(keyHex, address => {
+        const tdView = tds[1];
+        tdView.innerHTML = address;
+      });
+    viewAll.remove();
+    }
+  });
+  tdView.append(viewAll);
+  header.append(tdView);
+
+  table.append(header);
   for (let i = 0; i < data.length; i += 64) {
     const tr = document.createElement("tr");
+    tr.setAttribute("class", "tr");
 
     const tdKey = document.createElement("td");
     const keyHex = data.substring(i, i + 64);
     const key = hex2a(keyHex);
     tdKey.innerHTML = key;
+    tdKey.setAttribute("id", keyHex);
     tr.append(tdKey);
 
     const tdView = document.createElement("td");
