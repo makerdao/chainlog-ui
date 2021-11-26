@@ -31,7 +31,10 @@ const getAddress = (keyHex, callback) => {
   call({
     to: chainlog,
     data: "0x21f8a721" + keyHex // getAddress(bytes32)
-  }, callback);
+  }, addressHex => {
+    const address = "0x" + addressHex.substring(26);
+    callback(address);
+  });
 }
 const listKeys = data => {
   document.body.innerHTML = "";
@@ -50,13 +53,24 @@ const listKeys = data => {
     const view = document.createElement("button");
     view.innerHTML = "view";
     view.addEventListener("click", () => {
-      getAddress(keyHex, addressHex => {
-        const address = "0x" + addressHex.substring(26);
+      getAddress(keyHex, address => {
         tdView.innerHTML = address;
       });
     });
     tdView.append(view);
     tr.append(tdView);
+
+    const tdCopy = document.createElement("td");
+    const copy = document.createElement("button");
+    copy.innerHTML = "copy";
+    copy.addEventListener("click", () => {
+      getAddress(keyHex, address => {
+        navigator.clipboard.writeText(address);
+        copy.innerHTML = "copied";
+      });
+    });
+    tdCopy.append(copy);
+    tr.append(tdCopy);
 
     table.append(tr);
   }
