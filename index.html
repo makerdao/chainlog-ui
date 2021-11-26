@@ -101,6 +101,12 @@ const listKeys = data => {
     const tr = document.createElement("tr");
     tr.setAttribute("class", "tr");
     tr.setAttribute("name", "tr-visible");
+    tr.addEventListener("mouseover", () => {
+      tr.style.backgroundColor = "lightgrey";
+    });
+    tr.addEventListener("mouseout", () => {
+      tr.style.backgroundColor = "initial";
+    });
 
     const tdKey = document.createElement("td");
     const keyHex = data.substring(i, i + 64);
@@ -122,10 +128,16 @@ const listKeys = data => {
 
     const tdCopy = document.createElement("td");
     const copy = document.createElement("button");
+    copy.setAttribute("class", "copy");
     copy.innerHTML = "copy";
     copy.addEventListener("click", () => {
       getAddress(keyHex, address => {
         navigator.clipboard.writeText(address);
+        const copies = document.getElementsByClassName("copy");
+        for (let i = 0; i < copies.length; i++) {
+          const copy = copies[i];
+          copy.innerHTML = "copy";
+        }
         copy.innerHTML = "copied";
       });
     });
