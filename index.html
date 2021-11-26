@@ -40,6 +40,7 @@ const getAddress = (keyHex, callback) => {
 const listKeys = data => {
   document.body.innerHTML = "";
   const divVersion = document.createElement("div");
+  divVersion.style.height = "50px";
   document.body.append(divVersion);
   call({
     to: chainlog,
@@ -47,7 +48,7 @@ const listKeys = data => {
   }, versionString => {
     const versionHex = versionString.substring(2 + 2 * 32 * 2);
     const version = hex2a(versionHex);
-    divVersion.innerHTML = "Chainlog " + chainlog + " version " + version;
+    divVersion.innerHTML = "Chainlog " + chainlog + " version " + version + " on Ethereum mainnet";
   });
   data = data.substring(2 + 64 * 2);
   const table = document.createElement("table");
@@ -154,6 +155,18 @@ const listKeys = data => {
     });
     tdCopy.append(copy);
     tr.append(tdCopy);
+
+    const tdEscan = document.createElement("td");
+    const escan = document.createElement("button");
+    escan.innerHTML = "Etherscan";
+    escan.addEventListener("click", () => {
+      getAddress(keyHex, address => {
+        tdView.innerHTML = address;
+        window.open("https://etherscan.io/address/" + address);
+      });
+    });
+    tdEscan.append(escan);
+    tr.append(tdEscan);
 
     table.append(tr);
   }
