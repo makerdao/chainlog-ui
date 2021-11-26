@@ -5,6 +5,7 @@
         <meta charset="UTF-8">
     </head>
     <body>
+        loading…
         <script>
 const chainlog = "0xdA0Ab1e0017DEbCd72Be8599041a2aa3bA7e740F";
 const hex2a = hexx => { // adapted from https://stackoverflow.com/a/3745677/15857007
@@ -33,6 +34,7 @@ const getAddress = (keyHex, callback) => {
   }, callback);
 }
 const listKeys = data => {
+  document.body.innerHTML = "";
   data = data.substring(2 + 64 * 2);
   const table = document.createElement("table");
   for (let i = 0; i < data.length; i += 64) {
