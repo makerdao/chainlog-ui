@@ -17,50 +17,53 @@ const hex2a = hexx => { // adapted from https://stackoverflow.com/a/3745677/1585
   }
   return str;
 }
-const call = (params, callback, param2) => {
+const call = (params, callback) => {
   const url = 'https://mainnet.infura.io/v3/633f64adbe364bb88127348d4fcc21ef';
   const options = {
     method: 'POST',
     body:   '{"jsonrpc": "2.0", "method": "eth_call", "params": [' + JSON.stringify(params) + ', "latest"], "id": 0 }'
   };
   const promise = fetch(url, options);
-  promise.then(response => response.json().then(content => callback(content.result, param2)));
+  promise.then(response => response.json().then(content => callback(content.result)));
 }
-const table = document.createElement("table");
-const fillKey = (addressHex, keyHex) => {
-  const address = "0x" + addressHex.substring(26);
-  const key = hex2a(keyHex);
-  const abiUrl = "https://api.etherscan.io/api?module=contract&action=getabi&address=" + address;
-  const row = document.createElement("tr");
-  const cell1 = document.createElement("td");
-  cell1.innerHTML = key;
-  row.append(cell1);
-  const cell2 = document.createElement("td");
-  cell2.innerHTML = address;
-  row.append(cell2);
-  const cell3 = document.createElement("td");
-  const link = document.createElement("a");
-  link.setAttribute("href", abiUrl);
-  link.innerHTML = "ABI";
-  cell3.append(link);
-  row.append(cell3);
-  table.append(row);
+const getAddress = (keyHex, callback) => {
+  call({
+    to: chainlog,
+    data: "0x21f8a721" + keyHex // getAddress(bytes32)
+  }, callback);
 }
-document.body.append(table);
-const getKeys = data => {
+const listKeys = data => {
   data = data.substring(2 + 64 * 2);
+  const table = document.createElement("table");
   for (let i = 0; i < data.length; i += 64) {
+    const tr = document.createElement("tr");
+
+    const tdKey = document.createElement("td");
     const keyHex = data.substring(i, i + 64);
-    call({
-      to: chainlog,
-      data: "0x21f8a721" + keyHex // getAddress(bytes32)
-    }, fillKey, keyHex);
+    const key = hex2a(keyHex);
+    tdKey.innerHTML = key;
+    tr.append(tdKey);
+
+    const tdView = document.createElement("td");
+    const view = document.createElement("button");
+    view.innerHTML = "view";
+    view.addEventListener("click", () => {
+      getAddress(keyHex, addressHex => {
+        const address = "0x" + addressHex.substring(26);
+        tdView.innerHTML = address;
+      });
+    });
+    tdView.append(view);
+    tr.append(tdView);
+
+    table.append(tr);
   }
+  document.body.append(table);
 }
 call({
   to:   chainlog,
   data: "0x0f560cd7" // list()
-}, getKeys);
+}, listKeys);
         </script>
     </body>
 </html>
