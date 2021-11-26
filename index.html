@@ -49,6 +49,7 @@ const listKeys = data => {
   const viewAll = document.createElement("button");
   viewAll.innerHTML = "view all";
   viewAll.addEventListener("click", () => {
+    viewAll.innerHTML = "loading…";
     const trs = document.getElementsByClassName("tr");
     for (let i = 0; i < trs.length; i++) {
       const tr = trs[i];
@@ -58,8 +59,10 @@ const listKeys = data => {
       getAddress(keyHex, address => {
         const tdView = tds[1];
         tdView.innerHTML = address;
+        if (i === trs.length - 1) {
+          viewAll.remove();
+        }
       });
-    viewAll.remove();
     }
   });
   tdView.append(viewAll);
