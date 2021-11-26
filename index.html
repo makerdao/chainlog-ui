@@ -39,6 +39,16 @@ const getAddress = (keyHex, callback) => {
 }
 const listKeys = data => {
   document.body.innerHTML = "";
+  const divVersion = document.createElement("div");
+  document.body.append(divVersion);
+  call({
+    to: chainlog,
+    data: "0x54fd4d50" // version()
+  }, versionString => {
+    const versionHex = versionString.substring(2 + 2 * 32 * 2);
+    const version = hex2a(versionHex);
+    divVersion.innerHTML = "Chainlog " + chainlog + " version " + version;
+  });
   data = data.substring(2 + 64 * 2);
   const table = document.createElement("table");
   const header = document.createElement("tr");
