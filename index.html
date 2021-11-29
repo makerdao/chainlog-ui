@@ -43,7 +43,7 @@ window.addEventListener("load", () => {
       provider = "Metamask";
       chain = chainNames[conn.chainId];
       chainPrefix = chainPrefixes[conn.chainId];
-      notice = "(change it in Metamask)";
+      notice = "(change it on Metamask, no need to log in)";
       setUp();
     });
     window.ethereum.on("chainChanged", chainId => {
