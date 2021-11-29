@@ -17,6 +17,14 @@ const chainNames = {
   "0x2a": "Kovan"
 }
 
+const chainPrefixes = {
+  "0x1": "",
+  "0x3": "ropsten.",
+  "0x4": "rinkeby.",
+  "0x5": "goerli.",
+  "0x2a": "kovan."
+}
+
 const setUp = () => {
   canvas.innerHTML = "loading…";
   providerValue.innerHTML = provider;
@@ -28,23 +36,26 @@ const setUp = () => {
   }, draw);
 }
 
-let provider, chain, notice;
+let provider, chain, chainPrefix, notice;
 window.addEventListener("load", () => {
   if (typeof window.ethereum !== "undefined") {
     window.ethereum.on("connect", conn => {
       provider = "Metamask";
       chain = chainNames[conn.chainId];
+      chainPrefix = chainPrefixes[conn.chainId];
       notice = "(change it in Metamask)";
       setUp();
     });
     window.ethereum.on("chainChanged", chainId => {
       chain = chainNames[chainId];
+      chainPrefix = chainPrefixes[chainId];
       notice = "";
       setUp();
     });
   } else {
     provider = "Infura";
     chain = "Ethereum mainnet";
+    chainPrefix = "";
     notice = "";
     chainSelect.removeAttribute("disabled");
     chainSelect.append(chainGoerli);
@@ -80,6 +91,7 @@ chainGoerli.innerHTML = "Goerli";
 chainGoerli.setAttribute("value", "goerli");
 chainSelect.addEventListener("change", () => {
   let chain = chainSelect.value;
+  chainPrefix = chain === "mainnet" ? "" : "goerli.";
   endpoint = "https://" + chain + ".infura.io/v3/633f64adbe364bb88127348d4fcc21ef";
   setUp();
 });
@@ -275,7 +287,7 @@ const draw = data => {
       escan.setAttribute("disabled", true);
       getAddress(keyHex, address => {
         tdView.innerHTML = address;
-        window.open("https://etherscan.io/address/" + address);
+        window.open("https://" + chainPrefix + "etherscan.io/address/" + address);
         escan.innerHTML = "Etherscan";
         escan.removeAttribute("disabled");
       });
