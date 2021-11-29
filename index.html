@@ -18,8 +18,9 @@ const chainNames = {
 }
 
 const setUp = () => {
+  canvas.innerHTML = "loading…";
   providerValue.innerHTML = provider;
-  chainValue.innerHTML = chain;
+  chainOption.innerHTML = chain;
   chainNotice.innerHTML = notice;
   call({
     to:   chainlog,
@@ -38,11 +39,15 @@ window.addEventListener("load", () => {
     });
     window.ethereum.on("chainChanged", chainId => {
       chain = chainNames[chainId];
+      notice = "";
       setUp();
     });
   } else {
     provider = "Infura";
     chain = "Ethereum mainnet";
+    notice = "";
+    chainSelect.removeAttribute("disabled");
+    chainSelect.append(chainGoerli);
     setUp();
   }
 });
@@ -63,7 +68,22 @@ const chainName = document.createElement("td");
 chainName.innerHTML = "chain:";
 chainRow.append(chainName);
 const chainValue = document.createElement("td");
-chainValue.innerHTML = "loading…";
+const chainSelect = document.createElement("select");
+chainSelect.setAttribute("disabled", true);
+chainSelect.style.color = "black";
+const chainOption = document.createElement("option");
+chainOption.innerHTML = "loading…";
+chainOption.setAttribute("value", "mainnet");
+chainSelect.append(chainOption);
+const chainGoerli = document.createElement("option");
+chainGoerli.innerHTML = "Goerli";
+chainGoerli.setAttribute("value", "goerli");
+chainSelect.addEventListener("change", () => {
+  let chain = chainSelect.value;
+  endpoint = "https://" + chain + ".infura.io/v3/633f64adbe364bb88127348d4fcc21ef";
+  setUp();
+});
+chainValue.append(chainSelect);
 chainRow.append(chainValue);
 chainNotice = document.createElement("td");
 chainRow.append(chainNotice);
@@ -74,7 +94,7 @@ const canvas = document.createElement("div");
 canvas.innerHTML = "loading…";
 document.body.append(canvas);
 
-const endpoint = 'https://mainnet.infura.io/v3/633f64adbe364bb88127348d4fcc21ef';
+let endpoint = 'https://mainnet.infura.io/v3/633f64adbe364bb88127348d4fcc21ef';
 const chainlog = "0xdA0Ab1e0017DEbCd72Be8599041a2aa3bA7e740F";
 
 const hex2a = hexx => { // adapted from https://stackoverflow.com/a/3745677/15857007
