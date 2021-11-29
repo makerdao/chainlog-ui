@@ -9,25 +9,34 @@
     <body>
         <script>
 
+const chainNames = {
+  "0x1": "Ethereum mainnet",
+  "0x3": "Ropsten",
+  "0x4": "Rinkeby",
+  "0x5": "Görli",
+  "0x2a": "Kovan"
+}
+
 const setUp = () => {
   providerValue.innerHTML = provider;
+  chainValue.innerHTML = chain;
   call({
     to:   chainlog,
     data: "0x0f560cd7" // list()
   }, draw);
 }
 
-let provider;
+let provider, chain;
 window.addEventListener("load", () => {
   if (typeof window.ethereum !== "undefined") {
     window.ethereum.on("connect", conn => {
-      provider = "metamask";
-      chain = conn.chainId;
+      provider = "Metamask";
+      chain = chainNames[conn.chainId];
       setUp();
     });
   } else {
-    provider = "infura";
-    chain = "mainnet";
+    provider = "Infura";
+    chain = "Ethereum mainnet";
     setUp();
   }
 });
@@ -42,6 +51,14 @@ const providerValue = document.createElement("td");
 providerValue.innerHTML = "loading…";
 providerRow.append(providerValue);
 connTable.append(providerRow);
+const chainRow = document.createElement("tr");
+const chainName = document.createElement("td");
+chainName.innerHTML = "chain:";
+chainRow.append(chainName);
+const chainValue = document.createElement("td");
+chainValue.innerHTML = "loading…";
+chainRow.append(chainValue);
+connTable.append(chainRow);
 document.body.append(connTable);
 
 const canvas = document.createElement("div");
@@ -72,12 +89,16 @@ const infuraCall = (params, callback) => {
 }
 
 const call = (params, callback) => {
-  if (provider === "metamask" && window.ethereum.isConnected()) {
+  if (provider === "Metamask" && window.ethereum.isConnected()) {
     window.ethereum.request({
       method: "eth_call",
       params: [ params ]
     }).then(response => callback(response))
-    .catch(() => infuraCall(params, callback));
+    .catch(error => {
+      console.error(error);
+      console.error("falling back to Infura");
+      infuraCall(params, callback)
+    });
   } else {
     infuraCall(params, callback);
   }
@@ -104,7 +125,7 @@ const draw = data => {
   }, versionString => {
     const versionHex = versionString.substring(2 + 2 * 32 * 2);
     const version = hex2a(versionHex);
-    divVersion.innerHTML = "Chainlog " + chainlog + " version " + version + " on Ethereum mainnet";
+    divVersion.innerHTML = "Chainlog " + chainlog + " version " + version;
   });
   data = data.substring(2 + 64 * 2);
   const table = document.createElement("table");
