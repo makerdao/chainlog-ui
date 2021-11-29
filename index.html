@@ -207,6 +207,8 @@ const draw = data => {
     const view = document.createElement("button");
     view.innerHTML = "view";
     view.addEventListener("click", () => {
+      view.innerHTML = "loading…";
+      view.setAttribute("disabled", true);
       getAddress(keyHex, address => {
         tdView.innerHTML = address;
       });
@@ -219,6 +221,8 @@ const draw = data => {
     copy.setAttribute("class", "copy");
     copy.innerHTML = "copy";
     copy.addEventListener("click", () => {
+      copy.innerHTML = "load…";
+      copy.setAttribute("disabled", true);
       getAddress(keyHex, address => {
         tdView.innerHTML = address;
         navigator.clipboard.writeText(address);
@@ -228,6 +232,7 @@ const draw = data => {
           copy.innerHTML = "copy";
         }
         copy.innerHTML = "copied";
+        copy.removeAttribute("disabled");
       });
     });
     tdCopy.append(copy);
@@ -237,9 +242,13 @@ const draw = data => {
     const escan = document.createElement("button");
     escan.innerHTML = "Etherscan";
     escan.addEventListener("click", () => {
+      escan.innerHTML = "loading…";
+      escan.setAttribute("disabled", true);
       getAddress(keyHex, address => {
         tdView.innerHTML = address;
         window.open("https://etherscan.io/address/" + address);
+        escan.innerHTML = "Etherscan";
+        escan.removeAttribute("disabled");
       });
     });
     tdEscan.append(escan);
