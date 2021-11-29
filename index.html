@@ -20,18 +20,24 @@ const chainNames = {
 const setUp = () => {
   providerValue.innerHTML = provider;
   chainValue.innerHTML = chain;
+  chainNotice.innerHTML = notice;
   call({
     to:   chainlog,
     data: "0x0f560cd7" // list()
   }, draw);
 }
 
-let provider, chain;
+let provider, chain, notice;
 window.addEventListener("load", () => {
   if (typeof window.ethereum !== "undefined") {
     window.ethereum.on("connect", conn => {
       provider = "Metamask";
       chain = chainNames[conn.chainId];
+      notice = "(change it in Metamask)";
+      setUp();
+    });
+    window.ethereum.on("chainChanged", chainId => {
+      chain = chainNames[chainId];
       setUp();
     });
   } else {
@@ -43,6 +49,7 @@ window.addEventListener("load", () => {
 
 const connTable = document.createElement("table");
 connTable.style.backgroundColor = "lightgrey";
+connTable.style.marginBottom = "10px";
 const providerRow = document.createElement("tr");
 const providerName = document.createElement("td");
 providerName.innerHTML = "provider:";
@@ -58,6 +65,8 @@ chainRow.append(chainName);
 const chainValue = document.createElement("td");
 chainValue.innerHTML = "loading…";
 chainRow.append(chainValue);
+chainNotice = document.createElement("td");
+chainRow.append(chainNotice);
 connTable.append(chainRow);
 document.body.append(connTable);
 
