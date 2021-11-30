@@ -25,6 +25,14 @@ const chainPrefixes = {
   "0x2a": "kovan."
 }
 
+const chainApiPrefixes = {
+  "0x1": "",
+  "0x3": "-ropsten",
+  "0x4": "-rinkeby",
+  "0x5": "-goerli",
+  "0x2a": "-kovan"
+}
+
 const setUp = () => {
   canvas.innerHTML = "loading…";
   providerValue.innerHTML = provider;
@@ -36,19 +44,21 @@ const setUp = () => {
   }, draw);
 }
 
-let provider, chain, chainPrefix, notice;
+let provider, chain, chainPrefix, chainApiPrefix, notice;
 window.addEventListener("load", () => {
   if (typeof window.ethereum !== "undefined") {
     window.ethereum.on("connect", conn => {
       provider = "Metamask";
       chain = chainNames[conn.chainId];
       chainPrefix = chainPrefixes[conn.chainId];
+      chainApiPrefix = chainApiPrefixes[conn.chainId];
       notice = "(change it on Metamask, no need to log in)";
       setUp();
     });
     window.ethereum.on("chainChanged", chainId => {
       chain = chainNames[chainId];
       chainPrefix = chainPrefixes[chainId];
+      chainApiPrefix = chainApiPrefixes[conn.chainId];
       notice = "";
       setUp();
     });
@@ -56,6 +66,7 @@ window.addEventListener("load", () => {
     provider = "Infura";
     chain = "Ethereum mainnet";
     chainPrefix = "";
+    chainApiPrefix = "";
     notice = "";
     chainSelect.removeAttribute("disabled");
     chainSelect.append(chainGoerli);
@@ -92,6 +103,7 @@ chainGoerli.setAttribute("value", "goerli");
 chainSelect.addEventListener("change", () => {
   let chain = chainSelect.value;
   chainPrefix = chain === "mainnet" ? "" : "goerli.";
+  chainApiPrefix = chain === "mainnet" ? "" : "-goerli";
   endpoint = "https://" + chain + ".infura.io/v3/633f64adbe364bb88127348d4fcc21ef";
   setUp();
 });
@@ -324,7 +336,7 @@ const draw = data => {
       abiCopy.innerHTML = "loading…";
       abiCopy.setAttribute("disabled", true);
       getAddress(keyHex, address => {
-        fetch("https://api.etherscan.io/api?apikey=1PX598KB4P6N6JI12SC9JVS1N3QM5QZIFB&module=contract&action=getabi"
+        fetch("https://api" + chainApiPrefix + ".etherscan.io/api?apikey=1PX598KB4P6N6JI12SC9JVS1N3QM5QZIFB&module=contract&action=getabi"
         + "&address=" + address)
         .then(response => response.json()
         .then(data => {
@@ -333,6 +345,7 @@ const draw = data => {
             uncopy();
             abiCopy.innerHTML = "copied";
           } else {
+            console.error(data.result);
             abiCopy.innerHTML = "error";
           }
           abiCopy.removeAttribute("disabled");
