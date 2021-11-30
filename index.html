@@ -106,6 +106,15 @@ const canvas = document.createElement("div");
 canvas.innerHTML = "loading…";
 document.body.append(canvas);
 
+const footer = document.createElement("div");
+footer.style.marginTop = "20px";
+const source = document.createElement("a");
+source.innerHTML = "view source";
+source.setAttribute("href", "https://github.com/makerdao/chainlog-ui");
+source.setAttribute("target", "_blank");
+footer.append(source);
+document.body.append(footer);
+
 let endpoint = 'https://mainnet.infura.io/v3/633f64adbe364bb88127348d4fcc21ef';
 const chainlog = "0xdA0Ab1e0017DEbCd72Be8599041a2aa3bA7e740F";
 
