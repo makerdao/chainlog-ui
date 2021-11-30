@@ -283,6 +283,7 @@ const draw = data => {
     const tdCopy = document.createElement("td");
     const copy = document.createElement("button");
     copy.setAttribute("class", "copy");
+    copy.setAttribute("name", "copy");
     copy.innerHTML = "copy";
     copy.addEventListener("click", () => {
       copy.innerHTML = "load…";
@@ -290,11 +291,7 @@ const draw = data => {
       getAddress(keyHex, address => {
         tdView.innerHTML = address;
         navigator.clipboard.writeText(address);
-        const copies = document.getElementsByClassName("copy");
-        for (let i = 0; i < copies.length; i++) {
-          const copy = copies[i];
-          copy.innerHTML = "copy";
-        }
+        uncopy();
         copy.innerHTML = "copied";
         copy.removeAttribute("disabled");
       });
@@ -320,15 +317,26 @@ const draw = data => {
 
     const tdAbiCopy = document.createElement("td");
     const abiCopy = document.createElement("button");
+    abiCopy.setAttribute("class", "copy");
+    abiCopy.setAttribute("name", "copy ABI");
     abiCopy.innerHTML = "copy ABI";
     abiCopy.addEventListener("click", () => {
       abiCopy.innerHTML = "loading…";
       abiCopy.setAttribute("disabled", true);
       getAddress(keyHex, address => {
-        fetch("https://api.etherscan.io/api?module=contract&action=getabi&address=" + address)
-        .then(response => response.json().then(data => navigator.clipboard.writeText(data.result)));
-        abiCopy.removeAttribute("disabled");
-        abiCopy.innerHTML = "copied"; // TODO: undo copied elsewhere
+        fetch("https://api.etherscan.io/api?apikey=1PX598KB4P6N6JI12SC9JVS1N3QM5QZIFB&module=contract&action=getabi"
+        + "&address=" + address)
+        .then(response => response.json()
+        .then(data => {
+          if (data.status === "1") {
+            navigator.clipboard.writeText(data.result);
+            uncopy();
+            abiCopy.innerHTML = "copied";
+          } else {
+            abiCopy.innerHTML = "error";
+          }
+          abiCopy.removeAttribute("disabled");
+        }));
       });
     });
     tdAbiCopy.append(abiCopy);
@@ -339,6 +347,13 @@ const draw = data => {
   canvas.append(table);
 }
 
+const uncopy = () => {
+  const copies = document.getElementsByClassName("copy");
+  for (let i = 0; i < copies.length; i++) {
+    const copy = copies[i];
+    copy.innerHTML = copy.name;
+  }
+}
 
         </script>
     </body>
