@@ -180,6 +180,20 @@ const draw = data => {
   data = data.substring(2 + 64 * 2);
   const table = document.createElement("table");
   const header = document.createElement("tr");
+  header.style.backgroundColor = "lightgrey";
+  const tdContract = document.createElement("td");
+  tdContract.innerHTML = "contract";
+  header.append(tdContract);
+  const tdAddress = document.createElement("td");
+  tdAddress.innerHTML = "address";
+  tdAddress.setAttribute("colspan", 3);
+  header.append(tdAddress);
+  const tdAbi = document.createElement("td");
+  tdAbi.innerHTML = "ABI";
+  tdAbi.setAttribute("colspan", 2);
+  header.append(tdAbi);
+  table.append(header);
+  const tools = document.createElement("tr");
 
   const tdKey = document.createElement("td");
   const filter = document.createElement("input");
@@ -205,7 +219,7 @@ const draw = data => {
     }
   });
   tdKey.append(filter);
-  header.append(tdKey);
+  tools.append(tdKey);
 
   const tdView = document.createElement("td");
   const viewAll = document.createElement("button");
@@ -233,9 +247,9 @@ const draw = data => {
     }
   });
   tdView.append(viewAll);
-  header.append(tdView);
+  tools.append(tdView);
 
-  table.append(header);
+  table.append(tools);
   for (let i = 0; i < data.length; i += 64) {
     const tr = document.createElement("tr");
     tr.setAttribute("class", "tr");
@@ -303,6 +317,22 @@ const draw = data => {
     });
     tdEscan.append(escan);
     tr.append(tdEscan);
+
+    const tdAbiCopy = document.createElement("td");
+    const abiCopy = document.createElement("button");
+    abiCopy.innerHTML = "copy ABI";
+    abiCopy.addEventListener("click", () => {
+      abiCopy.innerHTML = "loading…";
+      abiCopy.setAttribute("disabled", true);
+      getAddress(keyHex, address => {
+        fetch("https://api.etherscan.io/api?module=contract&action=getabi&address=" + address)
+        .then(response => response.json().then(data => navigator.clipboard.writeText(data.result)));
+        abiCopy.removeAttribute("disabled");
+        abiCopy.innerHTML = "copied"; // TODO: undo copied elsewhere
+      });
+    });
+    tdAbiCopy.append(abiCopy);
+    tr.append(tdAbiCopy);
 
     table.append(tr);
   }
