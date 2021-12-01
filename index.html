@@ -143,11 +143,19 @@ const hex2a = hexx => { // adapted from https://stackoverflow.com/a/3745677/1585
 
 const infuraCall = (params, callback) => {
   const options = {
-    method: 'POST',
-    body:   '{"jsonrpc": "2.0", "method": "eth_call", "params": [' + JSON.stringify(params) + ', "latest"], "id": 0 }'
+    method: "POST",
+    body: '{"jsonrpc": "2.0", "method": "eth_call", "params": [' + JSON.stringify(params) + ', "latest"], "id": 0}'
   };
-  const promise = fetch(endpoint, options);
-  promise.then(response => response.json().then(content => callback(content.result)));
+  fetch(endpoint, options).then(response => {
+    if (response.ok) {
+      response.json().then(content => callback(content.result))
+    } else {
+      response.json().then(content => {
+        console.error("Infura: " + content.error.message);
+        canvas.innerHTML = "error";
+      });
+    }
+  });
 }
 
 const call = (params, callback) => {
