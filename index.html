@@ -249,6 +249,8 @@ const draw = data => {
   filter.setAttribute("placeholder", "filter");
   const trs = document.getElementsByClassName("tr");
   filter.addEventListener("keyup", () => {
+    const viewAll = document.getElementById("viewAll");
+    viewAll.style.display = "none";
     for (let i = 0; i < trs.length; i++) {
       const tr = trs[i];
       const key = tr.children[0].innerHTML;
@@ -258,13 +260,12 @@ const draw = data => {
         tr.style.display = "table-row";
         tr.setAttribute("name", "tr-visible");
         if (tr.children[1].innerHTML.includes("<button>")) {
-          const viewAll = document.getElementById("viewAll");
           viewAll.style.display = "block";
         }
       } else {
         tr.style.display = "none";
         tr.setAttribute("name", "tr-hidden");
-    }
+      }
     }
   });
   tdKey.append(filter);
