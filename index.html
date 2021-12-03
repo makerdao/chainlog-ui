@@ -198,6 +198,35 @@ const draw = data => {
     divVersion.innerHTML = "Chainlog " + chainlog + " version " + version;
   });
   data = data.substring(2 + 64 * 2);
+  const formatsDiv = document.createElement("div");
+  const formatsTitle = document.createElement("span");
+  formatsTitle.innerHTML = "export chainlog as ";
+  formatsDiv.append(formatsTitle);
+  const json = document.createElement("button");
+  json.setAttribute("class", "copy");
+  json.setAttribute("name", "JSON");
+  json.innerHTML = "JSON";
+  json.addEventListener("click", () => {
+    json.innerHTML = "load…";
+    json.setAttribute("disabled", true);
+    const object = {};
+    for (let i = 0; i < data.length; i += 64) {
+      const keyHex = data.substring(i, i + 64);
+      getAddress(keyHex, address => {
+        const key = hex2a(keyHex);
+        object[key] = address;
+        if (Object.keys(object).length === data.length / 64) {
+          const text = JSON.stringify(object);
+          navigator.clipboard.writeText(text);
+          uncopy();
+          json.innerHTML = "copied";
+          json.removeAttribute("disabled");
+        }
+      });
+    }
+  });
+  formatsDiv.append(json);
+  canvas.append(formatsDiv);
   const table = document.createElement("table");
   const header = document.createElement("tr");
   header.style.backgroundColor = "lightgrey";
