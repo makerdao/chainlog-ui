@@ -21,7 +21,12 @@ def get_version(chain):
         exit()
     data = result["result"]
     version_hex = data[2 * (1 + 2 * 32):]
-    version = bytes.fromhex(version_hex).decode("ascii")
+    version_bytes32 = bytes.fromhex(version_hex)
+    version_bytes = version_bytes32.replace(b"\x00", b"")
+    version = version_bytes.decode("ascii")
     return version
 
-version = get_version("goerli")
+chain = "mainnet"
+version = get_version(chain)
+path = "{}/{}.json".format(chain, version)
+print(os.path.exists(path))
