@@ -1,9 +1,11 @@
 #! /usr/bin/env python3
 
+import os
 import requests
 
-def get_version(key, chain):
-    endpoint = "https://{}.infura.io/v3/{}".format(chain, key)
+def get_version(chain):
+    infura_key = os.environ["INFURA_KEY"]
+    endpoint = "https://{}.infura.io/v3/{}".format(chain, infura_key)
     response = requests.post(endpoint, json={
         "jsonrpc": "2.0",
         "method": "eth_call",
@@ -22,5 +24,4 @@ def get_version(key, chain):
     version = bytes.fromhex(version_hex).decode("ascii")
     return version
 
-print(get_version("541446fd85024043bb8a18e8d8b375c9", "goerli"))
-
+version = get_version("goerli")
