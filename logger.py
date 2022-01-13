@@ -56,11 +56,23 @@ def get_log(chain):
         log[name] = address
     return log
 
-chain = "mainnet"
+chain = "goerli"
 version = get_version(chain)
 path = "{}/{}.json".format(chain, version)
-if not os.path.exists(path):
-   file = open(path, "w")
-   print("downloading {} chainlog v{}... ".format(chain, version))
-   log = get_log(chain)
-   json.dump(log, file, indent=2)
+index_file = open("index.json", "r+")
+index = json.load(index_file)
+if not os.path.exists(path) or version not in index[chain]["all"]:
+    print("downloading {} chainlog v{}... ".format(chain, version))
+    log = get_log(chain)
+    print("done.")
+    log_file = open(path, "w")
+    json.dump(log, log_file, indent=2)
+    log_file.close()
+    active_file = open("{}/active.json".format(chain), "w")
+    json.dump(log, active_file, indent=2)
+    active_file.close()
+    index[chain]["all"].append(version)
+    index[chain]["active"] = version
+    index_file.truncate(0)
+    index_json = json.dumps(index, indent=2)
+    index_file.write(index_json)
