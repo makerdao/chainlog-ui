@@ -3,6 +3,7 @@
 import os
 import requests
 import json
+import time
 
 def call(chain, calldata):
     infura_key = os.environ["INFURA_KEY"]
@@ -79,5 +80,8 @@ def update(chain):
         json.dump(index, index_file, indent=2)
         index_file.close()
 
-chain = "mainnet"
-update(chain)
+chains = ["mainnet", "goerli"]
+while True:
+    for chain in chains:
+        update(chain)
+    time.sleep(5 * 60)
