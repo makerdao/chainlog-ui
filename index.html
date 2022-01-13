@@ -187,7 +187,6 @@ const getAddress = (keyHex, callback) => {
 const draw = data => {
   canvas.innerHTML = "";
   const divVersion = document.createElement("div");
-  divVersion.style.height = "50px";
   canvas.append(divVersion);
   call({
     to: chainlog,
@@ -197,6 +196,13 @@ const draw = data => {
     const version = hex2a(versionHex);
     divVersion.innerHTML = "Chainlog " + chainlog + " version " + version;
   });
+  const apiNotice = document.createElement("div");
+  const apiLink = document.createElement("a");
+  apiLink.setAttribute("href", "https://chainlog.makerdao.com/api.html");
+  apiLink.innerHTML = "API documentation";
+  apiNotice.append(apiLink);
+  apiNotice.style.height = "50px";
+  canvas.append(apiNotice);
   data = data.substring(2 + 64 * 2);
   const formatsDiv = document.createElement("div");
   const formatsTitle = document.createElement("span");
