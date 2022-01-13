@@ -38,6 +38,7 @@ def get_version(chain):
 
 def get_log(chain):
     list_signature = "0x0f560cd7";
+    get_address_signature = "0x21f8a721";
     data = call(chain, list_signature)
     length_hex = data[2 * (1 + 32) : 2 * (1 + 32 + 32)]
     length = int(length_hex, 16)
@@ -45,17 +46,21 @@ def get_log(chain):
     if length != len(names) / 64:
         print("error:", data)
         exit()
+    log = {}
     for i in range(0, len(names), 64):
+        print("{}%".format(int(i / len(names) * 100)), end="\r")
         name_hex = names[i : i + 64]
+        address_bytes32 = call(chain, get_address_signature + name_hex)
         name = to_ascii(name_hex)
-        print(name)
+        address = "0x" + address_bytes32[2 * (1 + 12) :]
+        log[name] = address
+    return log
 
 chain = "mainnet"
 version = get_version(chain)
 path = "{}/{}.json".format(chain, version)
 if not os.path.exists(path):
    file = open(path, "w")
+   print("downloading {} chainlog v{}... ".format(chain, version))
    log = get_log(chain)
-   json.dump(log, file)
-
-get_log(chain)
+   json.dump(log, file, indent=2)
