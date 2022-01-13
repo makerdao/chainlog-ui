@@ -72,7 +72,8 @@ def update(chain):
         active_file = open("{}/active.json".format(chain), "w")
         json.dump(log, active_file, indent=2)
         active_file.close()
-        index[chain]["all"].append(version)
+        if version not in index[chain]["all"]:
+            index[chain]["all"].insert(0, version)
         index[chain]["active"] = version
         index_file = open("index.json", "w")
         json.dump(index, index_file, indent=2)
