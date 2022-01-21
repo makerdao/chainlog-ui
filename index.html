@@ -222,7 +222,7 @@ const draw = data => {
         const key = hex2a(keyHex);
         object[key] = address;
         if (Object.keys(object).length === data.length / 64) {
-          const text = JSON.stringify(object);
+          const text = JSON.stringify(object, null, 2);
           navigator.clipboard.writeText(text);
           uncopy();
           json.innerHTML = "copied";
