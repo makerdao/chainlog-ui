@@ -232,6 +232,31 @@ const draw = data => {
     }
   });
   formatsDiv.append(json);
+  const bash = document.createElement("button");
+  bash.setAttribute("class", "copy");
+  bash.setAttribute("name", "BASH");
+  bash.innerHTML = "BASH";
+  bash.style.marginLeft = "5px";
+  bash.addEventListener("click", () => {
+    bash.innerHTML = "load…";
+    bash.setAttribute("disabled", true);
+    let text = "";
+    for (let i = 0; i < data.length; i += 64) {
+      const keyHex = data.substring(i, i + 64);
+      getAddress(keyHex, address => {
+        const key = hex2a(keyHex);
+        const statement = `export ${key}=${address}\n`;
+        text += statement;
+        if (text.match(/export/g).length === data.length / 64) {
+          navigator.clipboard.writeText(text);
+          uncopy();
+          bash.innerHTML = "copied";
+          bash.removeAttribute("disabled");
+        }
+      });
+    }
+  });
+  formatsDiv.append(bash);
   canvas.append(formatsDiv);
   const table = document.createElement("table");
   const header = document.createElement("tr");
