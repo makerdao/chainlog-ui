@@ -305,7 +305,7 @@ const draw = data => {
   const tdView = document.createElement("td");
   const viewAll = document.createElement("button");
   viewAll.setAttribute("id", "viewAll");
-  viewAll.innerHTML = "view all";
+  viewAll.innerHTML = "show all";
   viewAll.addEventListener("click", () => {
     viewAll.innerHTML = "loading…";
     viewAll.setAttribute("disabled", true);
@@ -321,7 +321,7 @@ const draw = data => {
         tdView.innerHTML = address;
         if (i === trs.length - 1) {
           viewAll.style.display = "none";
-          viewAll.innerHTML = "view all";
+          viewAll.innerHTML = "show all";
           viewAll.removeAttribute("disabled");
         }
       });
@@ -351,7 +351,7 @@ const draw = data => {
 
     const tdView = document.createElement("td");
     const view = document.createElement("button");
-    view.innerHTML = "view";
+    view.innerHTML = "show";
     view.addEventListener("click", () => {
       tdView.innerHTML = "loading…";
       getAddress(keyHex, address => {
