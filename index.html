@@ -357,6 +357,10 @@ const draw = data => {
       getAddress(keyHex, address => {
         tdView.innerHTML = address;
       });
+      if (showingAll()) {
+        const viewAll = document.getElementById("viewAll");
+        viewAll.style.display = "none";
+      }
     });
     tdView.append(view);
     tr.append(tdView);
@@ -375,6 +379,10 @@ const draw = data => {
         uncopy();
         copy.innerHTML = "copied";
         copy.removeAttribute("disabled");
+        if (showingAll()) {
+          const viewAll = document.getElementById("viewAll");
+          viewAll.style.display = "none";
+        }
       });
     });
     tdCopy.append(copy);
@@ -391,6 +399,10 @@ const draw = data => {
         window.open("https://" + chainPrefix + "etherscan.io/address/" + address);
         escan.innerHTML = "Etherscan";
         escan.removeAttribute("disabled");
+        if (showingAll()) {
+          const viewAll = document.getElementById("viewAll");
+          viewAll.style.display = "none";
+        }
       });
     });
     tdEscan.append(escan);
@@ -427,6 +439,18 @@ const draw = data => {
     table.append(tr);
   }
   canvas.append(table);
+}
+
+const showingAll = () => {
+  const trs = document.getElementsByName("tr-visible");
+  for (let i = 0; i < trs.length; i++) {
+    const tr = trs[i];
+    const view = tr.children[1];
+    if (view.innerHTML.includes("<")) {
+      return false;
+    }
+  }
+  return true;
 }
 
 const uncopy = () => {
