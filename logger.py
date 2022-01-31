@@ -4,6 +4,7 @@ import os
 import requests
 import json
 import time
+from datetime import datetime
 
 def call(chain, calldata):
     infura_key = os.environ["INFURA_KEY"]
@@ -79,6 +80,8 @@ def update(chain):
         index_file = open("index.json", "w")
         json.dump(index, index_file, indent=2)
         index_file.close()
+    else:
+        print("{} - no changes on {}".format(datetime.now(), chain))
 
 chains = ["mainnet", "goerli"]
 while True:
