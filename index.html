@@ -257,6 +257,34 @@ const draw = data => {
     }
   });
   formatsDiv.append(bash);
+  const solidity = document.createElement("button");
+  solidity.setAttribute("class", "copy");
+  solidity.setAttribute("name", "Solidity");
+  solidity.innerHTML = "Solidity";
+  solidity.style.marginLeft = "5px";
+  solidity.addEventListener("click", () => {
+    solidity.innerHTML = "loading…";
+    solidity.setAttribute("disabled", true);
+    const header = "contract Addresses {\n\n    mapping (bytes32 => address) public addr;\n\n    constructor() public {\n";
+    const footer = "    }\n}";
+    let text = "";
+    for (let i = 0; i < data.length; i += 64) {
+        const keyHex = data.substring(i, i + 64);
+        getAddress(keyHex, address => {
+            const key = hex2a(keyHex);
+            const space = " ".repeat(40 - key.length);
+            const statement = `        addr["${key}"]${space}= ${address};\n`;
+            text += statement;
+            if (text.match(/addr/g).length === data.length / 64) {
+                navigator.clipboard.writeText(header + text + footer);
+                uncopy();
+                solidity.innerHTML = "copied";
+                solidity.removeAttribute("disabled");
+            }
+        });
+    }
+  });
+  formatsDiv.append(solidity);
   canvas.append(formatsDiv);
   const table = document.createElement("table");
   const header = document.createElement("tr");
