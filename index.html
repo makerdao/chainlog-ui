@@ -277,21 +277,27 @@ const draw = data => {
 
   const tdKey = document.createElement("td");
   const filter = document.createElement("input");
+  filter.setAttribute("id", "filter");
   filter.setAttribute("placeholder", "filter");
   const trs = document.getElementsByClassName("tr");
   filter.addEventListener("keyup", () => {
-    const viewAll = document.getElementById("viewAll");
-    viewAll.style.display = "none";
+    toggleAll("filter");
+    const filterAll = document.getElementById("filterAll");
     for (let i = 0; i < trs.length; i++) {
       const tr = trs[i];
       const key = tr.children[0].innerHTML;
+      const address = tr.children[1].innerHTML;
+      const notShowing = address.startsWith("<button");
       const queryLower = filter.value.toLowerCase();
+      const queryAllLower = filterAll.value.toLowerCase();
       const keyLower = key.toLowerCase();
-      if (keyLower.includes(queryLower)) {
+      if (keyLower.includes(queryLower) && (
+        notShowing || address.includes(queryAllLower))
+      ) {
         tr.style.display = "table-row";
         tr.setAttribute("name", "tr-visible");
         if (tr.children[1].innerHTML.includes("<button>")) {
-          viewAll.style.display = "block";
+          toggleAll("button");
         }
       } else {
         tr.style.display = "none";
@@ -320,7 +326,7 @@ const draw = data => {
       getAddress(keyHex, address => {
         tdView.innerHTML = address;
         if (i === trs.length - 1) {
-          viewAll.style.display = "none";
+          toggleAll("filter");
           viewAll.innerHTML = "show all";
           viewAll.removeAttribute("disabled");
         }
@@ -328,6 +334,36 @@ const draw = data => {
     }
   });
   tdView.append(viewAll);
+  const filterAll = document.createElement("input");
+  filterAll.setAttribute("id", "filterAll");
+  filterAll.setAttribute("placeholder", "filter");
+  filterAll.style.width = "100%";
+  filterAll.style.display = "none";
+  filterAll.addEventListener("keyup", () => {
+    const filter = document.getElementById("filter");
+    for (let i = 0; i < trs.length; i++) {
+      const tr = trs[i];
+      const key = tr.children[0].innerHTML;
+      const address = tr.children[1].innerHTML;
+      const notShowing = address.startsWith("<button");
+      const queryLower = filter.value.toLowerCase();
+      const queryAllLower = filterAll.value.toLowerCase();
+      const keyLower = key.toLowerCase();
+      if (keyLower.includes(queryLower) && (
+        notShowing || address.includes(queryAllLower))
+      ) {
+        tr.style.display = "table-row";
+        tr.setAttribute("name", "tr-visible");
+        if (tr.children[1].innerHTML.includes("<button>")) {
+          toggleAll("button");
+        }
+      } else {
+        tr.style.display = "none";
+        tr.setAttribute("name", "tr-hidden");
+      }
+    }
+  });
+  tdView.append(filterAll);
   tools.append(tdView);
 
   table.append(tools);
@@ -358,8 +394,7 @@ const draw = data => {
         tdView.innerHTML = address;
       });
       if (showingAll()) {
-        const viewAll = document.getElementById("viewAll");
-        viewAll.style.display = "none";
+        toggleAll("filter");
       }
     });
     tdView.append(view);
@@ -380,8 +415,7 @@ const draw = data => {
         copy.innerHTML = "copied";
         copy.removeAttribute("disabled");
         if (showingAll()) {
-          const viewAll = document.getElementById("viewAll");
-          viewAll.style.display = "none";
+          toggleAll("filter");
         }
       });
     });
@@ -400,8 +434,7 @@ const draw = data => {
         escan.innerHTML = "Etherscan";
         escan.removeAttribute("disabled");
         if (showingAll()) {
-          const viewAll = document.getElementById("viewAll");
-          viewAll.style.display = "none";
+          toggleAll("filter");
         }
       });
     });
@@ -451,6 +484,21 @@ const showingAll = () => {
     }
   }
   return true;
+}
+
+const toggleAll = what => {
+  const viewAll = document.getElementById("viewAll");
+  const filterAll = document.getElementById("filterAll");
+  if (what === "button") {
+    viewAll.style.display = "block";
+    filterAll.style.display = "none";
+  } else if (what === "filter") {
+    filterAll.style.display = "block";
+    viewAll.style.display = "none";
+    if (filterAll.value !== "") {
+      filterAll.dispatchEvent(new Event("keyup"));
+    }
+  }
 }
 
 const uncopy = () => {
