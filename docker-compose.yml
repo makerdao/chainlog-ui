@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  ui:
+    image: chainlog-ui
+    container_name: chainlog-ui
+    ports:
+      - "0.0.0.0:8080:80/tcp"
+    volumes:
+      - ./index.json:/usr/app/src/index.json
+      - ./goerli:/usr/app/src/goerli
+      - ./mainnet:/usr/app/src/mainnet
+  logger:
+    image: chainlog-logger
+    container_name: chainlog-logger
+    environment:
+      INFURA_KEY: $INFURA_KEY
+      PYTHONUNBUFFERED: 1
+    volumes:
+      - ./index.json:/usr/app/src/index.json
+      - ./goerli:/usr/app/src/goerli
+      - ./mainnet:/usr/app/src/mainnet
