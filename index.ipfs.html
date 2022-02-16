@@ -9,6 +9,30 @@
     <body>
         <script>
 
+
+/* IPFS BLOCK 
+
+const ipfsDiv = document.createElement("div");
+ipfsDiv.innerHTML = "IPFS CID: ";
+const ipfsCID = document.createElement("code");
+ipfsCID.innerHTML = "bafybeidhsd7fbhem2raehl4xo3ptutkj5ka7p574hppzbf3wusheekinw4";
+ipfsDiv.append(ipfsCID);
+const ipfsCopy = document.createElement("button");
+ipfsCopy.style.marginLeft = "10px";
+ipfsCopy.innerHTML = "copy";
+ipfsCopy.setAttribute("class", "copy");
+ipfsCopy.setAttribute("name", "copy");
+ipfsCopy.addEventListener("click", () => {
+  navigator.clipboard.writeText(ipfsCID.innerHTML);
+  uncopy();
+  ipfsCopy.innerHTML = "copied";
+});
+ipfsDiv.append(ipfsCopy);
+document.body.append(ipfsDiv);
+
+END IPFS BLOCK */
+
+
 const chainNames = {
   "0x1": "Ethereum mainnet",
   "0x3": "Ropsten",
@@ -121,11 +145,19 @@ document.body.append(canvas);
 
 const footer = document.createElement("div");
 footer.style.marginTop = "20px";
-const source = document.createElement("a");
-source.innerHTML = "view source";
-source.setAttribute("href", "https://github.com/makerdao/chainlog-ui");
-source.setAttribute("target", "_blank");
-footer.append(source);
+const sourceLink = document.createElement("a");
+sourceLink.innerHTML = "source code";
+sourceLink.setAttribute("href", "https://github.com/makerdao/chainlog-ui");
+sourceLink.setAttribute("target", "_blank");
+footer.append(sourceLink);
+const separator = document.createElement("span");
+separator.innerHTML = " · ";
+footer.append(separator);
+const apiLink = document.createElement("a");
+apiLink.innerHTML = "historical API";
+apiLink.setAttribute("href", "https://chainlog.makerdao.com/api.html");
+apiLink.setAttribute("target", "_blank");
+footer.append(apiLink);
 document.body.append(footer);
 
 let endpoint = 'https://mainnet.infura.io/v3/633f64adbe364bb88127348d4fcc21ef';
@@ -188,6 +220,7 @@ const getAddress = (keyHex, callback) => {
 const draw = data => {
   canvas.innerHTML = "";
   const divVersion = document.createElement("div");
+  divVersion.style.margin = "20px";
   canvas.append(divVersion);
   call({
     to: chainlog,
@@ -197,13 +230,6 @@ const draw = data => {
     const version = hex2a(versionHex);
     divVersion.innerHTML = "Chainlog " + chainlog + " version " + version;
   });
-  const apiNotice = document.createElement("div");
-  const apiLink = document.createElement("a");
-  apiLink.setAttribute("href", "https://chainlog.makerdao.com/api.html");
-  apiLink.innerHTML = "API documentation";
-  apiNotice.append(apiLink);
-  apiNotice.style.height = "50px";
-  canvas.append(apiNotice);
   data = data.substring(2 + 64 * 2);
   const formatsDiv = document.createElement("div");
   const formatsTitle = document.createElement("span");
