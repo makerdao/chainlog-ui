@@ -280,7 +280,7 @@ const draw = data => {
   filter.setAttribute("id", "filter");
   filter.setAttribute("placeholder", "filter");
   const trs = document.getElementsByClassName("tr");
-  filter.addEventListener("keydown", () => {
+  filter.addEventListener("keyup", () => {
     toggleAll("filter");
     const filterAll = document.getElementById("filterAll");
     for (let i = 0; i < trs.length; i++) {
@@ -339,7 +339,7 @@ const draw = data => {
   filterAll.setAttribute("placeholder", "filter");
   filterAll.style.width = "100%";
   filterAll.style.display = "none";
-  filterAll.addEventListener("keydown", () => {
+  filterAll.addEventListener("keyup", () => {
     const filter = document.getElementById("filter");
     for (let i = 0; i < trs.length; i++) {
       const tr = trs[i];
@@ -496,7 +496,7 @@ const toggleAll = what => {
     filterAll.style.display = "block";
     viewAll.style.display = "none";
     if (filterAll.value !== "") {
-      filterAll.dispatchEvent(new Event("keydown"));
+      filterAll.dispatchEvent(new Event("keyup"));
     }
   }
 }
