@@ -206,9 +206,13 @@ const draw = data => {
   data = data.substring(2 + 64 * 2);
   const formatsDiv = document.createElement("div");
   const formatsTitle = document.createElement("span");
-  formatsTitle.innerHTML = "export chainlog as ";
+  formatsTitle.setAttribute("id", "formatsTitle");
+  formatsTitle.innerHTML = "copy entire chainlog as ";
+  formatsTitle.setAttribute("entire", "copy entire chainlog as ");
+  formatsTitle.setAttribute("filtered", "copy filtered addresses as ");
   formatsDiv.append(formatsTitle);
   const json = document.createElement("button");
+  json.setAttribute("id", "json");
   json.setAttribute("class", "copy");
   json.setAttribute("name", "JSON");
   json.innerHTML = "JSON";
@@ -216,12 +220,19 @@ const draw = data => {
     json.innerHTML = "load…";
     json.setAttribute("disabled", true);
     const object = {};
+    let length = 0;
     for (let i = 0; i < data.length; i += 64) {
       const keyHex = data.substring(i, i + 64);
       getAddress(keyHex, address => {
         const key = hex2a(keyHex);
-        object[key] = address;
-        if (Object.keys(object).length === data.length / 64) {
+        const queryLower = filter.value.toLowerCase();
+        const queryAllLower = filterAll.value.toLowerCase();
+        const keyLower = key.toLowerCase();
+        if (keyLower.includes(queryLower) && address.includes(queryAllLower)) {
+          object[key] = address;
+        }
+        length += 64;
+        if (length === data.length) {
           const text = JSON.stringify(object, null, 2);
           navigator.clipboard.writeText(text);
           uncopy();
@@ -233,6 +244,7 @@ const draw = data => {
   });
   formatsDiv.append(json);
   const bash = document.createElement("button");
+  bash.setAttribute("id", "bash");
   bash.setAttribute("class", "copy");
   bash.setAttribute("name", "BASH");
   bash.innerHTML = "BASH";
@@ -241,13 +253,20 @@ const draw = data => {
     bash.innerHTML = "load…";
     bash.setAttribute("disabled", true);
     let text = "";
+    let length = 0;
     for (let i = 0; i < data.length; i += 64) {
       const keyHex = data.substring(i, i + 64);
       getAddress(keyHex, address => {
         const key = hex2a(keyHex);
-        const statement = `export ${key}=${address}\n`;
-        text += statement;
-        if (text.match(/export/g).length === data.length / 64) {
+        const queryLower = filter.value.toLowerCase();
+        const queryAllLower = filterAll.value.toLowerCase();
+        const keyLower = key.toLowerCase();
+        if (keyLower.includes(queryLower) && address.includes(queryAllLower)) {
+          const statement = `export ${key}=${address}\n`;
+          text += statement;
+        }
+        length += 64;
+        if (length === data.length) {
           navigator.clipboard.writeText(text);
           uncopy();
           bash.innerHTML = "copied";
@@ -283,6 +302,7 @@ const draw = data => {
   filter.addEventListener("keyup", () => {
     toggleAll("filter");
     const filterAll = document.getElementById("filterAll");
+    let filtered = false;
     for (let i = 0; i < trs.length; i++) {
       const tr = trs[i];
       const key = tr.children[0].innerHTML;
@@ -302,8 +322,19 @@ const draw = data => {
       } else {
         tr.style.display = "none";
         tr.setAttribute("name", "tr-hidden");
+        filtered = true;
       }
     }
+    const formatsTitle = document.getElementById("formatsTitle");
+    if (filtered) {
+      formatsTitle.innerHTML = formatsTitle.getAttribute("filtered");
+    } else {
+      formatsTitle.innerHTML = formatsTitle.getAttribute("entire");
+    }
+    const json = document.getElementById("json");
+    json.innerHTML = json.name;
+    const bash = document.getElementById("bash");
+    bash.innerHTML = bash.name;
   });
   tdKey.append(filter);
   tools.append(tdKey);
@@ -341,6 +372,7 @@ const draw = data => {
   filterAll.style.display = "none";
   filterAll.addEventListener("keyup", () => {
     const filter = document.getElementById("filter");
+    let filtered = false;
     for (let i = 0; i < trs.length; i++) {
       const tr = trs[i];
       const key = tr.children[0].innerHTML;
@@ -360,8 +392,19 @@ const draw = data => {
       } else {
         tr.style.display = "none";
         tr.setAttribute("name", "tr-hidden");
+        filtered = true;
       }
     }
+    const formatsTitle = document.getElementById("formatsTitle");
+    if (filtered) {
+      formatsTitle.innerHTML = formatsTitle.getAttribute("filtered");
+    } else {
+      formatsTitle.innerHTML = formatsTitle.getAttribute("entire");
+    }
+    const json = document.getElementById("json");
+    json.innerHTML = json.name;
+    const bash = document.getElementById("bash");
+    bash.innerHTML = bash.name;
   });
   tdView.append(filterAll);
   tools.append(tdView);
