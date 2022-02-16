@@ -74,24 +74,6 @@ window.addEventListener("load", () => {
   }
 });
 
-const ipfsDiv = document.createElement("div");
-ipfsDiv.innerHTML = "IPFS CID: ";
-const ipfsCID = document.createElement("b");
-ipfsCID.innerHTML = "QmVJvwCfwpyKBjsJ93JWeWqNZgxQbx681HLxKa7qwfGpai";
-ipfsDiv.append(ipfsCID);
-const ipfsCopy = document.createElement("button");
-ipfsCopy.style.marginLeft = "10px";
-ipfsCopy.innerHTML = "copy";
-ipfsCopy.setAttribute("class", "copy");
-ipfsCopy.setAttribute("name", "copy");
-ipfsCopy.addEventListener("click", () => {
-  navigator.clipboard.writeText(ipfsCID.innerHTML);
-  uncopy();
-  ipfsCopy.innerHTML = "copied";
-});
-ipfsDiv.append(ipfsCopy);
-document.body.append(ipfsDiv);
-
 const connTable = document.createElement("table");
 connTable.style.marginTop = "10px";
 connTable.style.backgroundColor = "lightgrey";
