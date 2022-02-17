@@ -7,9 +7,9 @@ services:
     ports:
       - "0.0.0.0:8080:80/tcp"
     volumes:
-      - ./index.json:/usr/app/src/index.json
-      - ./goerli:/usr/app/src/goerli
-      - ./mainnet:/usr/app/src/mainnet
+      - ./index.json:/usr/share/nginx/html/index.json
+      - ./goerli:/usr/share/nginx/html/goerli
+      - ./mainnet:/usr/share/nginx/html/mainnet
   logger:
     image: chainlog-logger
     container_name: chainlog-logger
