@@ -1,0 +1,9 @@
+FROM python:3.10
+
+WORKDIR /usr/app/src
+
+COPY logger.py ./
+
+RUN pip3 install requests
+
+CMD [ "python", "./logger.py"]
