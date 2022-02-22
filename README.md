@@ -6,7 +6,7 @@ UI for MakerDAO’s chainlog contract
 ## Test locally with Docker
 1. Build the 2 Docker images:
 ```
-docker build -t chainlog-ui .
+docker build -t chainlog-ui -f Dockerfile.ui .
 docker build -t chainlog-logger -f Dockerfile.logger .
 ```
 2. Start the 2 containers:
@@ -17,4 +17,8 @@ docker-compose up -d
 ```
 docker logs -f chainlog-ui
 docker logs -f chainlog-logger
+```
+4. Stop the containers:
+```
+docker-compose down
 ```
