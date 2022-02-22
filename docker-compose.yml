@@ -9,6 +9,7 @@ services:
     volumes:
       - ./index.json:/usr/share/nginx/html/index.json
       - ./goerli:/usr/share/nginx/html/goerli
+      - ./kovan:/usr/share/nginx/html/kovan
       - ./mainnet:/usr/share/nginx/html/mainnet
   logger:
     image: chainlog-logger
@@ -19,4 +20,5 @@ services:
     volumes:
       - ./index.json:/usr/app/src/index.json
       - ./goerli:/usr/app/src/goerli
+      - ./kovan:/usr/app/src/kovan
       - ./mainnet:/usr/app/src/mainnet
