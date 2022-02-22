@@ -2,9 +2,6 @@ FROM python:3.10
 
 WORKDIR /usr/app/src
 
-RUN mkdir -p /usr/app/src/mainnet
-RUN mkdir -p /usr/app/src/goerli
-
 COPY logger.py ./
 
 RUN pip3 install requests
