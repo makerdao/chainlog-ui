@@ -82,6 +82,7 @@ window.addEventListener("load", () => {
     window.ethereum.on("connect", conn => {
       provider = "Metamask";
       chain = chainNames[conn.chainId];
+      if (!chain) chain = "Unknown";
       chainPrefix = chainPrefixes[conn.chainId];
       chainApiPrefix = chainApiPrefixes[conn.chainId];
       infuraPrefix = infuraPrefixes[conn.chainId];
@@ -232,6 +233,18 @@ const getAddress = (keyHex, callback) => {
 
 const draw = data => {
   canvas.innerHTML = "";
+  if (data === "0x") {
+    const chainTitle = document.createElement("h3");
+    chainTitle.innerHTML = "Wrong chain";
+    canvas.append(chainTitle);
+    const chainText = document.createElement("div");
+    chainText.innerHTML = "The chainlog was not deployed to this chain at address " + chainlog;
+    canvas.append(chainText);
+    const chainAdvice = document.createElement("h4");
+    chainAdvice.innerHTML = "Select another chain on your Metamask plugin";
+    canvas.append(chainAdvice);
+    return;
+  }
   const divVersion = document.createElement("div");
   divVersion.style.margin = "20px";
   canvas.append(divVersion);
