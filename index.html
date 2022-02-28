@@ -57,6 +57,14 @@ const chainApiPrefixes = {
   "0x2a": "-kovan"
 }
 
+const infuraPrefixes = {
+  "0x1": "mainnet",
+  "0x3": "ropsten",
+  "0x4": "rinkeby",
+  "0x5": "goerli",
+  "0x2a": "kovan"
+}
+
 const setUp = () => {
   canvas.innerHTML = "loading…";
   providerValue.innerHTML = provider;
@@ -68,7 +76,7 @@ const setUp = () => {
   }, draw);
 }
 
-let provider, chain, chainPrefix, chainApiPrefix, notice;
+let provider, chain, chainPrefix, chainApiPrefix, infuraPrefix, notice;
 window.addEventListener("load", () => {
   if (typeof window.ethereum !== "undefined") {
     window.ethereum.on("connect", conn => {
@@ -76,6 +84,8 @@ window.addEventListener("load", () => {
       chain = chainNames[conn.chainId];
       chainPrefix = chainPrefixes[conn.chainId];
       chainApiPrefix = chainApiPrefixes[conn.chainId];
+      infuraPrefix = infuraPrefixes[conn.chainId];
+      endpoint = "https://" + infuraPrefix + ".infura.io/v3/633f64adbe364bb88127348d4fcc21ef";
       notice = "(change it on Metamask, no need to log in)";
       setUp();
     });
@@ -83,6 +93,8 @@ window.addEventListener("load", () => {
       chain = chainNames[chainId];
       chainPrefix = chainPrefixes[chainId];
       chainApiPrefix = chainApiPrefixes[chainId];
+      infuraPrefix = infuraPrefixes[chainId];
+      endpoint = "https://" + infuraPrefix + ".infura.io/v3/633f64adbe364bb88127348d4fcc21ef";
       notice = "";
       setUp();
     });
@@ -91,6 +103,7 @@ window.addEventListener("load", () => {
     chain = "Ethereum mainnet";
     chainPrefix = "";
     chainApiPrefix = "";
+    infuraPrefix = "mainnet";
     notice = "";
     chainSelect.removeAttribute("disabled");
     chainSelect.append(chainGoerli);
@@ -126,10 +139,10 @@ const chainGoerli = document.createElement("option");
 chainGoerli.innerHTML = "Görli";
 chainGoerli.setAttribute("value", "goerli");
 chainSelect.addEventListener("change", () => {
-  let chain = chainSelect.value;
-  chainPrefix = chain === "mainnet" ? "" : "goerli.";
-  chainApiPrefix = chain === "mainnet" ? "" : "-goerli";
-  endpoint = "https://" + chain + ".infura.io/v3/633f64adbe364bb88127348d4fcc21ef";
+  infuraPrefix = chainSelect.value;
+  chainPrefix = infuraPrefix === "mainnet" ? "" : "goerli.";
+  chainApiPrefix = infuraPrefix === "mainnet" ? "" : "-goerli";
+  endpoint = "https://" + infuraPrefix + ".infura.io/v3/633f64adbe364bb88127348d4fcc21ef";
   setUp();
 });
 chainValue.append(chainSelect);
@@ -199,7 +212,7 @@ const call = (params, callback) => {
     }).then(response => callback(response))
     .catch(error => {
       console.error(error);
-      console.error("falling back to Infura");
+      console.error("falling back to Infura " + infuraPrefix);
       infuraCall(params, callback)
     });
   } else {
