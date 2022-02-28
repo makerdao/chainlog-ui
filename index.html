@@ -208,7 +208,7 @@ const call = (params, callback) => {
   if (provider === "Metamask" && window.ethereum.isConnected()) {
     window.ethereum.request({
       method: "eth_call",
-      params: [ params ]
+      params: [ params, "latest" ]
     }).then(response => callback(response))
     .catch(error => {
       console.error(error);
