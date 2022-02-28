@@ -15,7 +15,7 @@
 const ipfsDiv = document.createElement("div");
 ipfsDiv.innerHTML = "IPFS CID: ";
 const ipfsCID = document.createElement("code");
-ipfsCID.innerHTML = "bafybeidhsd7fbhem2raehl4xo3ptutkj5ka7p574hppzbf3wusheekinw4";
+ipfsCID.innerHTML = "";
 ipfsDiv.append(ipfsCID);
 const ipfsCopy = document.createElement("button");
 ipfsCopy.style.marginLeft = "10px";
@@ -57,6 +57,14 @@ const chainApiPrefixes = {
   "0x2a": "-kovan"
 }
 
+const infuraPrefixes = {
+  "0x1": "mainnet",
+  "0x3": "ropsten",
+  "0x4": "rinkeby",
+  "0x5": "goerli",
+  "0x2a": "kovan"
+}
+
 const setUp = () => {
   canvas.innerHTML = "loading…";
   providerValue.innerHTML = provider;
@@ -68,14 +76,17 @@ const setUp = () => {
   }, draw);
 }
 
-let provider, chain, chainPrefix, chainApiPrefix, notice;
+let provider, chain, chainPrefix, chainApiPrefix, infuraPrefix, notice;
 window.addEventListener("load", () => {
   if (typeof window.ethereum !== "undefined") {
     window.ethereum.on("connect", conn => {
       provider = "Metamask";
       chain = chainNames[conn.chainId];
+      if (!chain) chain = "Unknown";
       chainPrefix = chainPrefixes[conn.chainId];
       chainApiPrefix = chainApiPrefixes[conn.chainId];
+      infuraPrefix = infuraPrefixes[conn.chainId];
+      endpoint = "https://" + infuraPrefix + ".infura.io/v3/633f64adbe364bb88127348d4fcc21ef";
       notice = "(change it on Metamask, no need to log in)";
       setUp();
     });
@@ -83,6 +94,8 @@ window.addEventListener("load", () => {
       chain = chainNames[chainId];
       chainPrefix = chainPrefixes[chainId];
       chainApiPrefix = chainApiPrefixes[chainId];
+      infuraPrefix = infuraPrefixes[chainId];
+      endpoint = "https://" + infuraPrefix + ".infura.io/v3/633f64adbe364bb88127348d4fcc21ef";
       notice = "";
       setUp();
     });
@@ -91,6 +104,7 @@ window.addEventListener("load", () => {
     chain = "Ethereum mainnet";
     chainPrefix = "";
     chainApiPrefix = "";
+    infuraPrefix = "mainnet";
     notice = "";
     chainSelect.removeAttribute("disabled");
     chainSelect.append(chainGoerli);
@@ -126,10 +140,10 @@ const chainGoerli = document.createElement("option");
 chainGoerli.innerHTML = "Görli";
 chainGoerli.setAttribute("value", "goerli");
 chainSelect.addEventListener("change", () => {
-  let chain = chainSelect.value;
-  chainPrefix = chain === "mainnet" ? "" : "goerli.";
-  chainApiPrefix = chain === "mainnet" ? "" : "-goerli";
-  endpoint = "https://" + chain + ".infura.io/v3/633f64adbe364bb88127348d4fcc21ef";
+  infuraPrefix = chainSelect.value;
+  chainPrefix = infuraPrefix === "mainnet" ? "" : "goerli.";
+  chainApiPrefix = infuraPrefix === "mainnet" ? "" : "-goerli";
+  endpoint = "https://" + infuraPrefix + ".infura.io/v3/633f64adbe364bb88127348d4fcc21ef";
   setUp();
 });
 chainValue.append(chainSelect);
@@ -195,11 +209,11 @@ const call = (params, callback) => {
   if (provider === "Metamask" && window.ethereum.isConnected()) {
     window.ethereum.request({
       method: "eth_call",
-      params: [ params ]
+      params: [ params, "latest" ]
     }).then(response => callback(response))
     .catch(error => {
       console.error(error);
-      console.error("falling back to Infura");
+      console.error("falling back to Infura " + infuraPrefix);
       infuraCall(params, callback)
     });
   } else {
@@ -219,6 +233,18 @@ const getAddress = (keyHex, callback) => {
 
 const draw = data => {
   canvas.innerHTML = "";
+  if (data === "0x") {
+    const chainTitle = document.createElement("h3");
+    chainTitle.innerHTML = "Wrong chain";
+    canvas.append(chainTitle);
+    const chainText = document.createElement("div");
+    chainText.innerHTML = "The chainlog was not deployed to this chain at address " + chainlog;
+    canvas.append(chainText);
+    const chainAdvice = document.createElement("h4");
+    chainAdvice.innerHTML = "Select another chain on your Metamask plugin";
+    canvas.append(chainAdvice);
+    return;
+  }
   const divVersion = document.createElement("div");
   divVersion.style.margin = "20px";
   canvas.append(divVersion);
