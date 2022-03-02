@@ -14,22 +14,23 @@
         <pre>
 https://chainlog.makerdao.com
 ├── <a href="https://chainlog.makerdao.com/api.html">api.html</a> (this file)
-├── <a href="https://chainlog.makerdao.com/index.json">index.json</a>
-├── mainnet
-│   ├── <a href="https://chainlog.makerdao.com/mainnet/active.json">active.json</a>
-│   ├── <a href="https://chainlog.makerdao.com/mainnet/1.9.12.json">1.9.12.json</a>
-│   └── … 
-├── goerli
-│   ├── <a href="https://chainlog.makerdao.com/goerli/active.json">active.json</a>
-│   ├── <a href="https://chainlog.makerdao.com/goerli/1.9.11.json">1.9.11.json</a>
-│   └── …
-└── …
+└── api
+    ├── <a href="https://chainlog.makerdao.com/api/index.json">index.json</a>
+    ├── mainnet
+    │   ├── <a href="https://chainlog.makerdao.com/api/mainnet/active.json">active.json</a>
+    │   ├── <a href="https://chainlog.makerdao.com/api/mainnet/1.9.12.json">1.9.12.json</a>
+    │   └── …
+    ├── goerli
+    │   ├── <a href="https://chainlog.makerdao.com/api/goerli/active.json">active.json</a>
+    │   ├── <a href="https://chainlog.makerdao.com/api/goerli/1.9.11.json">1.9.11.json</a>
+    │   └── …
+    └── …
         </pre>
         <h2>Get a list of all available chains and versions</h2>
-        The <a href="https://chainlog.makerdao.com/index.json">index.json</a> file contains a list of all the available chainlog versions for all the chains where MCD is deployed, and includes information about the active version on each chain.
+        The <a href="https://chainlog.makerdao.com/api/index.json">index.json</a> file contains a list of all the available chainlog versions for all the chains where MCD is deployed, and includes information about the active version on each chain.
         <h2>Get the active version on a given chain</h2>
-        <pre>GET https://chainlog.makerdao.com/{chain}/active.json</pre>
+        <pre>GET https://chainlog.makerdao.com/api/{chain}/active.json</pre>
         <h2>Get a specific version</h2>
-        <pre>GET https://chainlog.makerdao.com/{chain}/{version}.json</pre>
+        <pre>GET https://chainlog.makerdao.com/api/{chain}/{version}.json</pre>
     </body>
 </html>
