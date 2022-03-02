@@ -10,7 +10,7 @@
         <script>
 
 
-/* IPFS BLOCK 
+/* IPFS BLOCK
 
 const ipfsDiv = document.createElement("div");
 ipfsDiv.innerHTML = "IPFS CID: ";
@@ -92,6 +92,7 @@ window.addEventListener("load", () => {
     });
     window.ethereum.on("chainChanged", chainId => {
       chain = chainNames[chainId];
+      if (!chain) chain = "Unknown";
       chainPrefix = chainPrefixes[chainId];
       chainApiPrefix = chainApiPrefixes[chainId];
       infuraPrefix = infuraPrefixes[chainId];
