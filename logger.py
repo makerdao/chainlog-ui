@@ -60,8 +60,8 @@ def get_log(chain):
 
 def update(chain):
     version = get_version(chain)
-    path = "{}/{}.json".format(chain, version)
-    index_file = open("index.json", "r")
+    path = "chaindata/{}/{}.json".format(chain, version)
+    index_file = open("chaindata/index.json", "r")
     index = json.load(index_file)
     index_file.close()
     if not os.path.exists(path) or version not in index[chain]["all"]:
@@ -71,13 +71,13 @@ def update(chain):
         log_file = open(path, "w")
         json.dump(log, log_file, indent=2)
         log_file.close()
-        active_file = open("{}/active.json".format(chain), "w")
+        active_file = open("chaindata/{}/active.json".format(chain), "w")
         json.dump(log, active_file, indent=2)
         active_file.close()
         if version not in index[chain]["all"]:
             index[chain]["all"].insert(0, version)
         index[chain]["active"] = version
-        index_file = open("index.json", "w")
+        index_file = open("chaindata/index.json", "w")
         json.dump(index, index_file, indent=2)
         index_file.close()
     else:
