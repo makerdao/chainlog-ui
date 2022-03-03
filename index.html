@@ -15,7 +15,7 @@
 const ipfsDiv = document.createElement("div");
 ipfsDiv.innerHTML = "IPFS CID: ";
 const ipfsCID = document.createElement("code");
-ipfsCID.innerHTML = "bafybeief6wws5wfaaroqhcx3enidrn2nd5c53gqmfucbhzcfvk4xrqseva";
+ipfsCID.innerHTML = "bafybeiaik74a55sfd6ifboe6de3mjfm7vvplgxwv7nbmgj73pwgh56mc3e";
 ipfsDiv.append(ipfsCID);
 const ipfsCopy = document.createElement("button");
 ipfsCopy.style.marginLeft = "10px";
@@ -79,6 +79,12 @@ const setUp = () => {
 let provider, chain, chainPrefix, chainApiPrefix, infuraPrefix, notice;
 window.addEventListener("load", () => {
   if (typeof window.ethereum !== "undefined") {
+    setTimeout(() => {
+      if (!window.ethereum.isConnected()) {
+        console.log("Metamask connection timed out. Falling back to Infura mainnet");
+        setInfura();
+      }
+    }, 1000);
     window.ethereum.on("connect", conn => {
       provider = "Metamask";
       chain = chainNames[conn.chainId];
@@ -101,17 +107,21 @@ window.addEventListener("load", () => {
       setUp();
     });
   } else {
-    provider = "Infura";
-    chain = "Ethereum mainnet";
-    chainPrefix = "";
-    chainApiPrefix = "";
-    infuraPrefix = "mainnet";
-    notice = "";
-    chainSelect.removeAttribute("disabled");
-    chainSelect.append(chainGoerli);
-    setUp();
+    setInfura();
   }
 });
+
+const setInfura = () => {
+  provider = "Infura";
+  chain = "Ethereum mainnet";
+  chainPrefix = "";
+  chainApiPrefix = "";
+  infuraPrefix = "mainnet";
+  notice = "";
+  chainSelect.removeAttribute("disabled");
+  chainSelect.append(chainGoerli);
+  setUp();
+}
 
 const connTable = document.createElement("table");
 connTable.style.marginTop = "10px";
@@ -213,8 +223,7 @@ const call = (params, callback) => {
       params: [ params, "latest" ]
     }).then(response => callback(response))
     .catch(error => {
-      console.error(error);
-      console.error("falling back to Infura " + infuraPrefix);
+      console.log("falling back to Infura " + infuraPrefix);
       infuraCall(params, callback)
     });
   } else {
