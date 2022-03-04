@@ -12,19 +12,17 @@
         This API is centralized. Instead of using it, consider building your own chainlog client. Feel free to use <a href="https://github.com/makerdao/chainlog-ui/blob/main/index.html">the chainlog UI source code</a> as an example. Bear in mind that you need access to an archival node in order to obtain full historical information.
         <h2>File structure</h2>
         <pre>
-https://chainlog.makerdao.com
-├── <a href="https://chainlog.makerdao.com/api.html">api.html</a> (this file)
-└── api
-    ├── <a href="https://chainlog.makerdao.com/api/index.json">index.json</a>
-    ├── mainnet
-    │   ├── <a href="https://chainlog.makerdao.com/api/mainnet/active.json">active.json</a>
-    │   ├── <a href="https://chainlog.makerdao.com/api/mainnet/1.9.12.json">1.9.12.json</a>
-    │   └── …
-    ├── goerli
-    │   ├── <a href="https://chainlog.makerdao.com/api/goerli/active.json">active.json</a>
-    │   ├── <a href="https://chainlog.makerdao.com/api/goerli/1.9.11.json">1.9.11.json</a>
-    │   └── …
-    └── …
+https://chainlog.makerdao.com/api
+├── <a href="https://chainlog.makerdao.com/api/index.json">index.json</a>
+├── mainnet
+│   ├── <a href="https://chainlog.makerdao.com/api/mainnet/active.json">active.json</a>
+│   ├── <a href="https://chainlog.makerdao.com/api/mainnet/1.9.12.json">1.9.12.json</a>
+│   └── …
+├── goerli
+│   ├── <a href="https://chainlog.makerdao.com/api/goerli/active.json">active.json</a>
+│   ├── <a href="https://chainlog.makerdao.com/api/goerli/1.9.11.json">1.9.11.json</a>
+│   └── …
+└── …
         </pre>
         <h2>Get a list of all available chains and versions</h2>
         <pre>GET <a href="https://chainlog.makerdao.com/api/index.json">https://chainlog.makerdao.com/api/index.json</a></pre>
