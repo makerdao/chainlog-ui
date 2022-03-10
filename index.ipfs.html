@@ -93,7 +93,7 @@ window.addEventListener("load", () => {
       chainApiPrefix = chainApiPrefixes[conn.chainId];
       infuraPrefix = infuraPrefixes[conn.chainId];
       endpoint = "https://" + infuraPrefix + ".infura.io/v3/633f64adbe364bb88127348d4fcc21ef";
-      notice = "(change it on Metamask, no need to log in)";
+      notice = "change this in your Metamask plugin";
       setUp();
     });
     window.ethereum.on("chainChanged", chainId => {
