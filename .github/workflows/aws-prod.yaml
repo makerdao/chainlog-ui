@@ -46,7 +46,7 @@ jobs:
         # push them to ECR:
         # - chainlog-ui
         docker pull $ECR_REGISTRY/chainlog-ui-prod:$ENVIRONMENT_TAG
-        docker build -t chainlog-logger-prod \
+        docker build -t chainlog-ui-prod \
                      -t $ECR_REGISTRY/chainlog-ui-prod:$SHA_TAG \
                      -t $ECR_REGISTRY/chainlog-ui-prod:$LATEST_TAG \
                      -t $ECR_REGISTRY/chainlog-ui-prod:$ENVIRONMENT_TAG \
