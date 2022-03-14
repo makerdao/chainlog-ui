@@ -17,14 +17,15 @@ jobs:
     - name: Build Docker images
       id: build-images
       run: |
-        docker build -t chainlog-ui-prod .
-        docker build -t chainlog-logger-prod .
+        docker build -t chainlog-ui-prod -f Dockerfile.ui .
+        docker build -t chainlog-logger-prod -f Dockerfile.logger .
 
     - name: Start and test chainlog containers
       id: start-containers
       env:
         INFURA_KEY: ${{ secrets.INFURA_KEY }}
       run: |
+        cd ../../
         docker-compose up -d
         sleep 10
         docker ps | grep chainlog-ui
