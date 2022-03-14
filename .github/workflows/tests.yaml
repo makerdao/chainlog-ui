@@ -1,0 +1,33 @@
+on:
+  push:
+    branches-ignore:
+      - main
+
+name: Build and test containers
+
+jobs:
+  deploy:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Build Docker images
+      id: build-images
+      run: |
+        docker build -t chainlog-ui-prod .
+        docker build -t chainlog-logger-prod .
+
+    - name: Start and test chainlog containers
+      id: start-containers
+      env:
+        INFURA_KEY: ${{ secrets.INFURA_KEY }}
+      run: |
+        docker-compose up -d
+        sleep 10
+        docker ps | grep chainlog-ui
+        docker ps | grep chainlog-logger
+        curl -I localhost:8080
+        docker logs chainlog-logger | grep "no changes on"
