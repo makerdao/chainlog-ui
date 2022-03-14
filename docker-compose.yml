@@ -7,10 +7,7 @@ services:
     ports:
       - "0.0.0.0:8080:80/tcp"
     volumes:
-      - ./index.json:/usr/share/nginx/html/index.json
-      - ./goerli:/usr/share/nginx/html/goerli
-      - ./kovan:/usr/share/nginx/html/kovan
-      - ./mainnet:/usr/share/nginx/html/mainnet
+      - ./api:/usr/share/nginx/html/api
   logger:
     image: chainlog-logger
     container_name: chainlog-logger
@@ -18,7 +15,4 @@ services:
       INFURA_KEY: $INFURA_KEY
       PYTHONUNBUFFERED: 1
     volumes:
-      - ./index.json:/usr/app/src/index.json
-      - ./goerli:/usr/app/src/goerli
-      - ./kovan:/usr/app/src/kovan
-      - ./mainnet:/usr/app/src/mainnet
+      - ./api:/usr/app/src/api
