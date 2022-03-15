@@ -2,6 +2,9 @@ version: '3'
 
 services:
   ui:
+    build:
+      context: .
+      dockerfile: Dockerfile.ui
     image: chainlog-ui
     container_name: chainlog-ui
     ports:
@@ -9,6 +12,9 @@ services:
     volumes:
       - ./api:/usr/share/nginx/html/api
   logger:
+    build:
+      context: .
+      dockerfile: Dockerfile.logger
     image: chainlog-logger
     container_name: chainlog-logger
     environment:
