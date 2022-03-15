@@ -24,8 +24,8 @@ jobs:
       id: start-containers
       env:
         INFURA_KEY: ${{ secrets.INFURA_KEY }}
+      working-directory: ./
       run: |
-        cd ../../
         docker-compose up -d
         sleep 10
         docker ps | grep chainlog-ui
