@@ -25,4 +25,4 @@ jobs:
         docker ps | grep chainlog-ui
         docker ps | grep chainlog-logger
         curl -I localhost:8080
-        docker logs chainlog-logger | grep "no changes on"
+        docker logs chainlog-logger
