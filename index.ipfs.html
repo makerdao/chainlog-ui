@@ -288,7 +288,7 @@ const draw = data => {
       const keyHex = data.substring(i, i + 64);
       getAddress(keyHex, address => {
         const key = hex2a(keyHex);
-        const queryLower = filter.value.toLowerCase();
+        const queryLower = filter.value.toLowerCase().replace(" ", "_");
         const queryAllLower = filterAll.value.toLowerCase();
         const keyLower = key.toLowerCase();
         if (keyLower.includes(queryLower) && address.includes(queryAllLower)) {
@@ -321,7 +321,7 @@ const draw = data => {
       const keyHex = data.substring(i, i + 64);
       getAddress(keyHex, address => {
         const key = hex2a(keyHex);
-        const queryLower = filter.value.toLowerCase();
+        const queryLower = filter.value.toLowerCase().replace(" ", "_");
         const queryAllLower = filterAll.value.toLowerCase();
         const keyLower = key.toLowerCase();
         if (keyLower.includes(queryLower) && address.includes(queryAllLower)) {
@@ -371,7 +371,7 @@ const draw = data => {
       const key = tr.children[0].innerHTML;
       const address = tr.children[1].innerHTML;
       const notShowing = address.startsWith("<button");
-      const queryLower = filter.value.toLowerCase();
+      const queryLower = filter.value.toLowerCase().replace(" ", "_");
       const queryAllLower = filterAll.value.toLowerCase();
       const keyLower = key.toLowerCase();
       if (keyLower.includes(queryLower) && (
