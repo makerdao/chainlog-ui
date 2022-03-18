@@ -4,12 +4,12 @@ UI for MakerDAO’s chainlog contract
 [chainlog.makerdao.com](https://chainlog.makerdao.com)
 
 ## Test locally with Docker
-1. Build the 2 Docker images:
+1. Make sure that older Docker images are removed, and containers are stopped, if you want to test new code:
 ```
-docker build -t chainlog-ui -f Dockerfile.ui .
-docker build -t chainlog-logger -f Dockerfile.logger .
+docker rmi chainlog-ui
+docker rmi chainlog-logger
 ```
-2. Start the 2 containers:
+2. Build the Docker images and start the 2 containers:
 ```
 docker-compose up -d
 ```
