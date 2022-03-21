@@ -45,7 +45,7 @@ jobs:
         # Build Docker containers and
         # push them to ECR:
         # - chainlog-ui
-        docker pull $ECR_REGISTRY/chainlog-ui-prod:$ENVIRONMENT_TAG
+        docker pull $ECR_REGISTRY/chainlog-ui-prod:$LATEST_TAG
         docker build -t chainlog-ui-prod \
                      -t $ECR_REGISTRY/chainlog-ui-prod:$SHA_TAG \
                      -t $ECR_REGISTRY/chainlog-ui-prod:$LATEST_TAG \
@@ -53,7 +53,7 @@ jobs:
                      .
         docker push $ECR_REGISTRY/chainlog-logger-prod --all-tags
         # - chainlog-logger
-        docker pull $ECR_REGISTRY/chainlog-logger-prod:$ENVIRONMENT_TAG
+        docker pull $ECR_REGISTRY/chainlog-logger-prod:$LATEST_TAG
         docker build -t chainlog-logger-prod \
                      -t $ECR_REGISTRY/chainlog-logger-prod:$SHA_TAG \
                      -t $ECR_REGISTRY/chainlog-logger-prod:$LATEST_TAG \
