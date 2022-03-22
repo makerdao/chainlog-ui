@@ -50,6 +50,7 @@ jobs:
                      -t $ECR_REGISTRY/chainlog-ui-prod:$SHA_TAG \
                      -t $ECR_REGISTRY/chainlog-ui-prod:$LATEST_TAG \
                      -t $ECR_REGISTRY/chainlog-ui-prod:$ENVIRONMENT_TAG \
+                     -f Dockerfile.ui \
                      .
         docker push $ECR_REGISTRY/chainlog-logger-prod --all-tags
         # - chainlog-logger
@@ -58,6 +59,7 @@ jobs:
                      -t $ECR_REGISTRY/chainlog-logger-prod:$SHA_TAG \
                      -t $ECR_REGISTRY/chainlog-logger-prod:$LATEST_TAG \
                      -t $ECR_REGISTRY/chainlog-logger-prod:$ENVIRONMENT_TAG \
+                     -f Dockerfile.logger \
                      .
         docker push $ECR_REGISTRY/chainlog-logger-prod --all-tags
 
