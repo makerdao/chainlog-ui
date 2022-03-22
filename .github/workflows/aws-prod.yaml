@@ -52,7 +52,7 @@ jobs:
                      -t $ECR_REGISTRY/chainlog-ui-prod:$ENVIRONMENT_TAG \
                      -f Dockerfile.ui \
                      .
-        docker push $ECR_REGISTRY/chainlog-logger-prod --all-tags
+        docker push $ECR_REGISTRY/chainlog-ui-prod --all-tags
         # - chainlog-logger
         docker pull $ECR_REGISTRY/chainlog-logger-prod:$LATEST_TAG
         docker build -t chainlog-logger-prod \
