@@ -15,7 +15,7 @@
 const ipfsDiv = document.createElement("div");
 ipfsDiv.innerHTML = "IPFS CID: ";
 const ipfsCID = document.createElement("code");
-ipfsCID.innerHTML = "bafybeifqmcornzaqqdfmm6axy4hiw7xzakhkz6zfhmymqzys7d72yj6wse";
+ipfsCID.innerHTML = "bafybeicrpolk2x3jcnwxb4vbm75hgnwrqhljgubuxnn6pr6o4kybp3rhwy";
 ipfsDiv.append(ipfsCID);
 const ipfsCopy = document.createElement("button");
 ipfsCopy.style.marginLeft = "10px";
@@ -123,6 +123,22 @@ const setInfura = () => {
   setUp();
 }
 
+const linksDiv = document.createElement("div");
+const sourceLink = document.createElement("a");
+sourceLink.innerHTML = "source code";
+sourceLink.setAttribute("href", "https://github.com/makerdao/chainlog-ui");
+sourceLink.setAttribute("target", "_blank");
+linksDiv.append(sourceLink);
+const separator = document.createElement("span");
+separator.innerHTML = " · ";
+linksDiv.append(separator);
+const apiLink = document.createElement("a");
+apiLink.innerHTML = "historical API";
+apiLink.setAttribute("href", "https://chainlog.makerdao.com/api.html");
+apiLink.setAttribute("target", "_blank");
+linksDiv.append(apiLink);
+document.body.append(linksDiv);
+
 const connTable = document.createElement("table");
 connTable.style.marginTop = "10px";
 connTable.style.backgroundColor = "lightgrey";
@@ -167,23 +183,6 @@ document.body.append(connTable);
 const canvas = document.createElement("div");
 canvas.innerHTML = "loading…";
 document.body.append(canvas);
-
-const footer = document.createElement("div");
-footer.style.marginTop = "20px";
-const sourceLink = document.createElement("a");
-sourceLink.innerHTML = "source code";
-sourceLink.setAttribute("href", "https://github.com/makerdao/chainlog-ui");
-sourceLink.setAttribute("target", "_blank");
-footer.append(sourceLink);
-const separator = document.createElement("span");
-separator.innerHTML = " · ";
-footer.append(separator);
-const apiLink = document.createElement("a");
-apiLink.innerHTML = "historical API";
-apiLink.setAttribute("href", "https://chainlog.makerdao.com/api.html");
-apiLink.setAttribute("target", "_blank");
-footer.append(apiLink);
-document.body.append(footer);
 
 let endpoint = 'https://mainnet.infura.io/v3/633f64adbe364bb88127348d4fcc21ef';
 const chainlog = "0xdA0Ab1e0017DEbCd72Be8599041a2aa3bA7e740F";
