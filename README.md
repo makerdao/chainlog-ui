@@ -1,7 +1,8 @@
 # chainlog-ui
-UI for MakerDAO’s chainlog contract
+UI and API for MakerDAO’s chainlog contract
 
-[chainlog.makerdao.com](https://chainlog.makerdao.com)
+* [chainlog.makerdao.com](https://chainlog.makerdao.com)
+* [chainlog.makerdao.com/api.html](https://chainlog.makerdao.com/api.html)
 
 ## Test locally with Docker
 1. Make sure that older Docker images are removed, and containers are stopped, if you want to test new code:
