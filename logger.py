@@ -5,6 +5,7 @@ import requests
 import json
 import time
 from datetime import datetime
+from eth_utils import to_checksum_address
 
 def call(chain, calldata):
     infura_key = os.environ["INFURA_KEY"]
@@ -55,7 +56,8 @@ def get_log(chain):
         address_bytes32 = call(chain, get_address_signature + name_hex)
         name = to_ascii(name_hex)
         address = "0x" + address_bytes32[2 * (1 + 12) :]
-        log[name] = address
+        address_checksum = to_checksum_address(address)
+        log[name] = address_checksum
     return log
 
 def update(chain):

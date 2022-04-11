@@ -4,6 +4,6 @@ WORKDIR /usr/app/src
 
 COPY logger.py ./
 
-RUN pip3 install requests
+RUN pip3 install requests pysha3 eth_utils
 
 CMD [ "python", "./logger.py"]
