@@ -68,19 +68,39 @@
   print(result)
         </pre>
         If you are using an archival node, set a block number instead of <code>"latest"</code> above in order to retreive historical data.
-        <h2>File structure</h2>
+        <h2>Available resources</h2>
         <pre>
 https://chainlog.makerdao.com/api
 ├── <a href="https://chainlog.makerdao.com/api/index.json">index.json</a>
-├── mainnet
-│   ├── <a href="https://chainlog.makerdao.com/api/mainnet/active.json">active.json</a>
-│   ├── <a href="https://chainlog.makerdao.com/api/mainnet/1.9.12.json">1.9.12.json</a>
-│   └── …
-├── goerli
-│   ├── <a href="https://chainlog.makerdao.com/api/goerli/active.json">active.json</a>
-│   ├── <a href="https://chainlog.makerdao.com/api/goerli/1.9.11.json">1.9.11.json</a>
-│   └── …
-└── …
+<div id="canvas"></div>
         </pre>
+        <script>
+const main = async () => {
+  const canvas = document.getElementById("canvas");
+  const response = await fetch("api/index.json");
+  const list = await response.json();
+  const chains = Object.keys(list);
+  for (let i = 0; i < chains.length; i++) {
+    const chain = chains[i];
+    if (i === chains.length - 1) {
+      canvas.innerHTML += "└── " + chain + "<br/>";
+    } 
+    else {
+      canvas.innerHTML += "├── " + chain + "<br/>";
+    }
+    const pipe1 = i === chains.length - 1 ? "    " : "│   ";
+    if (list[chain].active !== null) {
+      canvas.innerHTML += pipe1 + "├── " + '<a href="api/' + chain + '/active.json">active.json</a><br/>';
+    }
+    const versions = list[chain].all;
+    for (let i = 0; i < versions.length; i++) {
+      const version = versions[i];
+      const pipe2 = i === versions.length - 1 ? "└── " : "├── ";
+      canvas.innerHTML += pipe1 + pipe2 + '<a href="api/' + chain + '/' + version + '.json">' + version + '.json</a><br/>';
+    }
+  }
+}
+main();
+        </script>
     </body>
 </html>
