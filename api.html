@@ -1,15 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Chainlog historical API documentation - MakerDAO</title>
+        <title>Chainlog historical API - MakerDAO</title>
         <meta charset="UTF-8">
         <meta name="referrer" content="origin">
         <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     </head>
     <body>
-        <h1>Chainlog historical API documentation</h1>
-        <h2>A word about decentralization</h2>
-        This API is centralized. Instead of using it, consider building your own chainlog client. Feel free to use <a href="https://github.com/makerdao/chainlog-ui/blob/main/index.html">the chainlog UI source code</a> as an example. Bear in mind that you need access to an archival node in order to obtain full historical information.
+        <h1>Chainlog historical API</h1>
+        <h2>Usage</h2>
+        <h3>Get a list of all available chains and versions</h3>
+        <pre>GET <a href="https://chainlog.makerdao.com/api/index.json">https://chainlog.makerdao.com/api/index.json</a></pre>
+        <h3>Get the active version on a given chain</h3>
+        <pre>GET https://chainlog.makerdao.com/api/{chain}/active.json</pre>
+        <h3>Get a specific version on a given chain</h3>
+        <pre>GET https://chainlog.makerdao.com/api/{chain}/{version}.json</pre>
+        <h2>Code examples</h2>
+        You can set your JavaScript app to use this API <a href="https://github.com/makerdao/chainlog-ui/blob/main/examples/api.js">in the following way</a>:
+        <pre>
+  const url = "https://chainlog.makerdao.com/api/mainnet/active.json";
+  const response = await fetch(url);
+  const chainlog = await response.json();
+        </pre>
+        If you care about decentralization, however, do not use this API. Instead <a href="https://github.com/makerdao/chainlog-ui/blob/main/examples/ethers.js">query the blockchain directly</a>:
+        <pre>
+  const address = "0xda0ab1e0017debcd72be8599041a2aa3ba7e740f";
+  const abi = [
+    "function list() external view returns (bytes32[])",
+    "function getAddress(bytes32) external view returns (address)"
+  ];
+  const provider = ethers.getDefaultProvider();
+  const chainlog = new ethers.Contract(address, abi, provider);
+  const list = await chainlog.list();
+  const result = {};
+  for (let keyHex of list) {
+    const key = ethers.utils.parseBytes32String(keyHex);
+    const address = await chainlog.getAddress(keyHex);
+    result[key] = address;
+  }
+  console.log(result);
+        </pre>
+        Please note that the above code will only retreive the latest data.<br/><br/>
+        You can also ditch web3 libraries and perform low-level JSON RPC calls. Here is an <a href="https://github.com/makerdao/chainlog-ui/blob/main/examples/python.py">example with Python</a>:
+        <pre>
+  keys = requests.post("https://mainnet.infura.io/v3/" + infura_key, json={
+      "jsonrpc": "2.0",
+      "method": "eth_call",
+      "params": [{
+          "to": "0xdA0Ab1e0017DEbCd72Be8599041a2aa3bA7e740F",
+          "data": "0x0f560cd7"
+      }, "latest"],
+      "id": 0
+  }).json()["result"][130:]
+  result = {}
+  for i in range(0, len(keys), 64):
+      address = "0x" + requests.post("https://mainnet.infura.io/v3/" + infura_key, json={
+          "jsonrpc": "2.0",
+          "method": "eth_call",
+          "params": [{
+              "to": "0xdA0Ab1e0017DEbCd72Be8599041a2aa3bA7e740F",
+              "data": "0x21f8a721" + keys[i:i+64]
+          }, "latest"],
+          "id": 0
+      }).json()["result"][26:]
+      key = bytes.fromhex(keys[i:i+64]).replace(b"\x00", b"").decode("ascii")
+      result[key] = address
+  print(result)
+        </pre>
+        If you are using an archival node, set a block number instead of <code>"latest"</code> above in order to retreive historical data.
         <h2>File structure</h2>
         <pre>
 https://chainlog.makerdao.com/api
@@ -24,11 +82,5 @@ https://chainlog.makerdao.com/api
 │   └── …
 └── …
         </pre>
-        <h2>Get a list of all available chains and versions</h2>
-        <pre>GET <a href="https://chainlog.makerdao.com/api/index.json">https://chainlog.makerdao.com/api/index.json</a></pre>
-        <h2>Get the active version on a given chain</h2>
-        <pre>GET https://chainlog.makerdao.com/api/{chain}/active.json</pre>
-        <h2>Get a specific version</h2>
-        <pre>GET https://chainlog.makerdao.com/api/{chain}/{version}.json</pre>
     </body>
 </html>
