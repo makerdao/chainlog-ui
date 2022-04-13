@@ -21,8 +21,9 @@
   const url = "https://chainlog.makerdao.com/api/mainnet/active.json";
   const response = await fetch(url);
   const chainlog = await response.json();
+  console.log(chainlog);
         </pre>
-        If you care about decentralization, however, do not use this API. Instead <a href="https://github.com/makerdao/chainlog-ui/blob/main/examples/ethers.js">query the blockchain directly</a>:
+        If you care about decentralization, however, <b>do not use this API</b>. Instead <a href="https://github.com/makerdao/chainlog-ui/blob/main/examples/ethers.js">query the blockchain directly</a>:
         <pre>
   const address = "0xda0ab1e0017debcd72be8599041a2aa3ba7e740f";
   const abi = [
@@ -67,8 +68,8 @@
       result[key] = address
   print(result)
         </pre>
-        If you are using an archival node, set a block number instead of <code>"latest"</code> above in order to retreive historical data.
-        <h2>Available resources</h2>
+        The above code has the advantage that it will allow you to retreive historical data as long as you are using an archival node. In order to do that, replace <code>"latest"</code> with a specific block number.
+        <h2>Available resources in this API</h2>
         <pre>
 https://chainlog.makerdao.com/api
 ├── <a href="https://chainlog.makerdao.com/api/index.json">index.json</a>
