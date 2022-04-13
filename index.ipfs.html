@@ -26,7 +26,7 @@ ipfsCopy.innerHTML = "copy";
 ipfsCopy.setAttribute("class", "copy");
 ipfsCopy.setAttribute("name", "copy");
 ipfsCopy.addEventListener("click", () => {
-  navigator.clipboard.writeText(ipfsCID.innerHTML);
+  navigator.clipboard.writeText(CID);
   uncopy();
   ipfsCopy.innerHTML = "copied";
 });
@@ -127,7 +127,7 @@ const setInfura = () => {
 }
 
 const title = document.createElement("h1");
-title.innerHTML = "MakerDAO Deployed Contract Addresses Registry";
+title.innerHTML = "MakerDAO Deployment Registry";
 document.body.append(title);
 
 const linksDiv = document.createElement("div");

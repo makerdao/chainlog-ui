@@ -12,7 +12,7 @@
 
 /* IPFS BLOCK */
 
-const CID = "bafybeieenzwixiawlslheaox7kixajhc3smyyrnl32i546ettgxctq4mmq";
+const CID = "bafybeibny477imf2xiu7kf4iewzh7scdoccxetxai6zlwlcifwf2ysly3i";
 
 const ipfsDiv = document.createElement("div");
 ipfsDiv.innerHTML = "IPFS CID: ";
@@ -26,7 +26,7 @@ ipfsCopy.innerHTML = "copy";
 ipfsCopy.setAttribute("class", "copy");
 ipfsCopy.setAttribute("name", "copy");
 ipfsCopy.addEventListener("click", () => {
-  navigator.clipboard.writeText(ipfsCID.innerHTML);
+  navigator.clipboard.writeText(CID);
   uncopy();
   ipfsCopy.innerHTML = "copied";
 });
@@ -127,7 +127,7 @@ const setInfura = () => {
 }
 
 const title = document.createElement("h1");
-title.innerHTML = "MakerDAO Deployed Contract Addresses Registry";
+title.innerHTML = "MakerDAO Deployment Registry";
 document.body.append(title);
 
 const linksDiv = document.createElement("div");
