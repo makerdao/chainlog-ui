@@ -367,6 +367,7 @@ const draw = data => {
   const filter = document.createElement("input");
   filter.setAttribute("id", "filter");
   filter.setAttribute("placeholder", "filter");
+  filter.setAttribute("autofocus", "true");
   const trs = document.getElementsByClassName("tr");
   filter.addEventListener("keyup", () => {
     toggleAll("filter");
