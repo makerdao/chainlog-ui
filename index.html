@@ -367,7 +367,6 @@ const draw = data => {
   const filter = document.createElement("input");
   filter.setAttribute("id", "filter");
   filter.setAttribute("placeholder", "filter");
-  filter.setAttribute("autofocus", "true");
   const trs = document.getElementsByClassName("tr");
   filter.addEventListener("focus", () => filter.select());
   filter.addEventListener("keyup", () => {
@@ -587,6 +586,7 @@ const draw = data => {
     table.append(tr);
   }
   canvas.append(table);
+  filter.focus();
 }
 
 const showingAll = () => {
