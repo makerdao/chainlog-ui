@@ -367,8 +367,8 @@ const draw = data => {
   const filter = document.createElement("input");
   filter.setAttribute("id", "filter");
   filter.setAttribute("placeholder", "filter");
-  filter.setAttribute("autofocus", "true");
   const trs = document.getElementsByClassName("tr");
+  filter.addEventListener("focus", () => filter.select());
   filter.addEventListener("keyup", () => {
     toggleAll("filter");
     const filterAll = document.getElementById("filterAll");
@@ -440,6 +440,7 @@ const draw = data => {
   filterAll.setAttribute("placeholder", "filter");
   filterAll.style.width = "100%";
   filterAll.style.display = "none";
+  filterAll.addEventListener("focus", () => filterAll.select());
   filterAll.addEventListener("keyup", () => {
     const filter = document.getElementById("filter");
     let filtered = false;
@@ -448,7 +449,7 @@ const draw = data => {
       const key = tr.children[0].innerHTML;
       const address = tr.children[1].innerHTML;
       const notShowing = address.startsWith("<button");
-      const queryLower = filter.value.toLowerCase();
+      const queryLower = filter.value.toLowerCase().replace(" ", "_");
       const queryAllLower = filterAll.value.toLowerCase();
       const keyLower = key.toLowerCase();
       if (keyLower.includes(queryLower) && (
@@ -585,6 +586,7 @@ const draw = data => {
     table.append(tr);
   }
   canvas.append(table);
+  filter.focus();
 }
 
 const showingAll = () => {
