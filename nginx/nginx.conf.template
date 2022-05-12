@@ -9,7 +9,7 @@ server {
     }
 
     location /checksum/ {
-        proxy_pass "http://checksum:8080/";
+        proxy_pass "http://$CHECKSUM_CONTAINER_NAME:8080/";
     }
 
     error_page   500 502 503 504  /50x.html;
