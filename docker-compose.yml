@@ -22,3 +22,11 @@ services:
       PYTHONUNBUFFERED: 1
     volumes:
       - ./api:/usr/app/src/api
+  checksum:
+    build:
+      context: .
+      dockerfile: Dockerfile.checksum
+    image: chainlog-checksum
+    container_name: chainlog-checksum
+    environment:
+      PYTHONUNBUFFERED: 1s
