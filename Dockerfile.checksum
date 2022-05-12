@@ -1,0 +1,9 @@
+FROM python:3.10
+
+WORKDIR /usr/app/src
+
+COPY checksum.py ./
+
+RUN pip3 install pysha3 eth_utils
+
+CMD [ "python", "./checksum.py"]
