@@ -3,7 +3,7 @@ UI and API for MakerDAO’s chainlog contract
 
 * [chainlog.makerdao.com](https://chainlog.makerdao.com)
 * [chainlog.makerdao.com/api.html](https://chainlog.makerdao.com/api.html)
-* chainlog.makerdao.com/checksum/\<contract_address\>
+* chainlog.makerdao.com/checksum/\<address\>
 
 ## Test locally with Docker
 1. Make sure that older Docker images are removed, and containers are stopped, if you want to test new code:
