@@ -15,5 +15,5 @@ class Handler(BaseHTTPRequestHandler):
             self.send_response(400)
             self.end_headers()
 
-server = HTTPServer(("localhost", 8080), Handler)
+server = HTTPServer(("0.0.0.0", 8080), Handler)
 server.serve_forever()

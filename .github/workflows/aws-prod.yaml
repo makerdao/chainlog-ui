@@ -53,6 +53,15 @@ jobs:
                      -f Dockerfile.ui \
                      .
         docker push $ECR_REGISTRY/chainlog-ui-prod --all-tags
+        # - chainlog-checksum
+        docker pull $ECR_REGISTRY/chainlog-checksum-prod:$LATEST_TAG
+        docker build -t chainlog-checksum-prod \
+                     -t $ECR_REGISTRY/chainlog-checksum-prod:$SHA_TAG \
+                     -t $ECR_REGISTRY/chainlog-checksum-prod:$LATEST_TAG \
+                     -t $ECR_REGISTRY/chainlog-checksum-prod:$ENVIRONMENT_TAG \
+                     -f Dockerfile.checksum \
+                     .
+        docker push $ECR_REGISTRY/chainlog-checksum-prod --all-tags
         # - chainlog-logger
         docker pull $ECR_REGISTRY/chainlog-logger-prod:$LATEST_TAG
         docker build -t chainlog-logger-prod \

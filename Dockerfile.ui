@@ -1,3 +1,8 @@
 FROM nginx:1.21
 
-COPY * /usr/share/nginx/html/
+COPY api.html \
+     index.html \
+     index.ipfs.html \
+     /usr/share/nginx/html/
+
+COPY ./nginx/nginx.conf.template /etc/nginx/templates/default.conf.template

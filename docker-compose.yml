@@ -7,6 +7,8 @@ services:
       dockerfile: Dockerfile.ui
     image: chainlog-ui
     container_name: chainlog-ui
+    environment:
+      CHECKSUM_CONTAINER_NAME: checksum
     ports:
       - "0.0.0.0:8080:80/tcp"
     volumes:
@@ -22,3 +24,11 @@ services:
       PYTHONUNBUFFERED: 1
     volumes:
       - ./api:/usr/app/src/api
+  checksum:
+    build:
+      context: .
+      dockerfile: Dockerfile.checksum
+    image: chainlog-checksum
+    container_name: chainlog-checksum
+    environment:
+      PYTHONUNBUFFERED: 1s
