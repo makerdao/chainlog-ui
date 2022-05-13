@@ -451,6 +451,9 @@ const draw = data => {
           viewAll.innerHTML = "show all";
           viewAll.removeAttribute("disabled");
         }
+        getChecksum(address, checksum => {
+          tdView.innerHTML = checksum;
+        });
       });
     }
   });
