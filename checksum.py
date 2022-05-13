@@ -9,6 +9,7 @@ class Handler(BaseHTTPRequestHandler):
         if is_address(content):
             checksum = to_checksum_address(content)
             self.send_response(200)
+            self.send_header("Access-Control-Allow-Origin", "*")
             self.end_headers()
             self.wfile.write(bytes(checksum, "utf-8"))
         else:
