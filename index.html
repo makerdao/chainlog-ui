@@ -247,6 +247,26 @@ const getAddress = (keyHex, callback) => {
   });
 }
 
+const getChecksum = (address, callback) => {
+  fetch(`https://chainlog.makerdao.com/checksum/${address}`).then(response => {
+    if (response.ok) {
+      response.text().then(checksum => {
+        if (checksum.toLowerCase() === address) {
+          callback(checksum);
+        } else {
+          callback(address);
+        }
+      }).catch(e => {
+        callback(address);
+      });
+    } else {
+      callback(address);
+    }
+  }).catch(e => {
+    callback(address);
+  });
+}
+
 const draw = data => {
   canvas.innerHTML = "";
   if (data === "0x") {
@@ -505,7 +525,9 @@ const draw = data => {
     view.addEventListener("click", () => {
       tdView.innerHTML = "loading…";
       getAddress(keyHex, address => {
-        tdView.innerHTML = address;
+        getChecksum(address, checksum => {
+          tdView.innerHTML = checksum;
+        });
       });
       if (showingAll()) {
         toggleAll("filter");
@@ -523,14 +545,16 @@ const draw = data => {
       copy.innerHTML = "load…";
       copy.setAttribute("disabled", true);
       getAddress(keyHex, address => {
-        tdView.innerHTML = address;
-        navigator.clipboard.writeText(address);
-        uncopy();
-        copy.innerHTML = "copied";
-        copy.removeAttribute("disabled");
-        if (showingAll()) {
-          toggleAll("filter");
-        }
+        getChecksum(address, checksum => {
+          tdView.innerHTML = checksum;
+          navigator.clipboard.writeText(checksum);
+          uncopy();
+          copy.innerHTML = "copied";
+          copy.removeAttribute("disabled");
+          if (showingAll()) {
+            toggleAll("filter");
+          }
+        });
       });
     });
     tdCopy.append(copy);
