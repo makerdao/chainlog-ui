@@ -6,6 +6,7 @@ import json
 import time
 from datetime import datetime
 from eth_utils import to_checksum_address
+import subprocess
 
 def call(chain, calldata):
     infura_key = os.environ["INFURA_KEY"]
@@ -82,6 +83,7 @@ def update(chain):
         index_file = open("api/index.json", "w")
         json.dump(index, index_file, indent=2)
         index_file.close()
+        subprocess.run(["./push.sh", chain, version])
     else:
         print("{} - no changes on {}".format(datetime.now(), chain))
 
