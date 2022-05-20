@@ -2,7 +2,9 @@ FROM python:3.10
 
 WORKDIR /usr/app/src
 
-COPY logger.py ./
+COPY logger.py \
+     push.sh \
+     ./
 
 RUN pip3 install requests pysha3 eth_utils
 
