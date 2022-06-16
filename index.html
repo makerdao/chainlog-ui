@@ -12,7 +12,7 @@
 
 /* IPFS BLOCK */
 
-const CID = "bafybeicdxab4clvjegkcpdb6mrkfcf4tytcgpoprhyotweu7febbn3ngxi";
+const CID = "bafybeid6dreur7nlcuqrdz7irtyffwvt3pvyzvac3cfdxmznw6kmoxmj3a";
 
 const ipfsDiv = document.createElement("div");
 ipfsDiv.innerHTML = "IPFS CID: ";
@@ -396,7 +396,7 @@ const draw = data => {
     for (let i = 0; i < trs.length; i++) {
       const tr = trs[i];
       const key = tr.children[0].innerHTML;
-      const address = tr.children[1].innerHTML;
+      const address = tr.children[1].innerHTML.toLowerCase();
       const notShowing = address.startsWith("<button");
       const queryLower = filter.value.toLowerCase().replace(" ", "_");
       const queryAllLower = filterAll.value.toLowerCase();
@@ -470,7 +470,7 @@ const draw = data => {
     for (let i = 0; i < trs.length; i++) {
       const tr = trs[i];
       const key = tr.children[0].innerHTML;
-      const address = tr.children[1].innerHTML;
+      const address = tr.children[1].innerHTML.toLowerCase();
       const notShowing = address.startsWith("<button");
       const queryLower = filter.value.toLowerCase().replace(" ", "_");
       const queryAllLower = filterAll.value.toLowerCase();

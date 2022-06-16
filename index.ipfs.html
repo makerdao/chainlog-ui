@@ -396,7 +396,7 @@ const draw = data => {
     for (let i = 0; i < trs.length; i++) {
       const tr = trs[i];
       const key = tr.children[0].innerHTML;
-      const address = tr.children[1].innerHTML;
+      const address = tr.children[1].innerHTML.toLowerCase();
       const notShowing = address.startsWith("<button");
       const queryLower = filter.value.toLowerCase().replace(" ", "_");
       const queryAllLower = filterAll.value.toLowerCase();
@@ -470,7 +470,7 @@ const draw = data => {
     for (let i = 0; i < trs.length; i++) {
       const tr = trs[i];
       const key = tr.children[0].innerHTML;
-      const address = tr.children[1].innerHTML;
+      const address = tr.children[1].innerHTML.toLowerCase();
       const notShowing = address.startsWith("<button");
       const queryLower = filter.value.toLowerCase().replace(" ", "_");
       const queryAllLower = filterAll.value.toLowerCase();
