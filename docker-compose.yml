@@ -21,6 +21,8 @@ services:
     container_name: chainlog-logger
     environment:
       INFURA_KEY: $INFURA_KEY
+      GITHUB_TOKEN: $GITHUB_TOKEN
+      CHAINLOG_REPO: "makerdao/chainlog-ui"
       PYTHONUNBUFFERED: 1
     volumes:
       - ./api:/usr/app/src/api
