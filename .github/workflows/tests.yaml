@@ -24,6 +24,6 @@ jobs:
         docker-compose up -d
         sleep 10
         docker ps | grep chainlog-ui
-        docker ps | grep chainlog-logger
+        docker ps | grep chainlog-logger || docker logs chainlog-logger && exit 1
         curl -I localhost:8080
         docker logs chainlog-logger
