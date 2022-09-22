@@ -18,7 +18,7 @@ const ipfsDiv = document.createElement("div");
 ipfsDiv.innerHTML = "IPFS CID: ";
 const ipfsCID = document.createElement("a");
 ipfsCID.innerHTML = CID;
-ipfsCID.setAttribute("href", "https://gateway.ipfs.io/ipfs/" + CID);
+ipfsCID.setAttribute("href", "https://ipfs.io/ipfs/" + CID);
 ipfsDiv.append(ipfsCID);
 const ipfsCopy = document.createElement("button");
 ipfsCopy.style.marginLeft = "10px";
@@ -343,7 +343,7 @@ const draw = data => {
     bash.setAttribute("disabled", true);
     let text = "";
     let length = 0;
-    for (let i = 0; i < data.length; i += 64) {
+    for (let i = 0; i < data.length; i += 64) {
       const keyHex = data.substring(i, i + 64);
       getAddress(keyHex, address => {
         const key = hex2a(keyHex);
@@ -618,7 +618,7 @@ const draw = data => {
 
 const showingAll = () => {
   const trs = document.getElementsByName("tr-visible");
-  for (let i = 0; i < trs.length; i++) {
+  for (let i = 0; i < trs.length; i++) {
     const tr = trs[i];
     const view = tr.children[1];
     if (view.innerHTML.includes("<")) {
