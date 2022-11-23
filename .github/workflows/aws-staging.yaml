@@ -46,7 +46,7 @@ jobs:
         # Build Docker containers and
         # push them to ECR:
         # - chainlog-ui
-        docker pull $ECR_REGISTRY/chainlog-ui-staging:$LATEST_TAG
+        docker pull $ECR_REGISTRY/chainlog-ui-staging:$LATEST_TAG || true
         docker build -t chainlog-ui-staging \
                      -t $ECR_REGISTRY/chainlog-ui-staging:$SHA_TAG \
                      -t $ECR_REGISTRY/chainlog-ui-staging:$LATEST_TAG \
@@ -55,7 +55,7 @@ jobs:
                      .
         docker push $ECR_REGISTRY/chainlog-ui-staging --all-tags
         # - chainlog-checksum
-        docker pull $ECR_REGISTRY/chainlog-checksum-staging:$LATEST_TAG
+        docker pull $ECR_REGISTRY/chainlog-checksum-staging:$LATEST_TAG || true
         docker build -t chainlog-checksum-staging \
                      -t $ECR_REGISTRY/chainlog-checksum-staging:$SHA_TAG \
                      -t $ECR_REGISTRY/chainlog-checksum-staging:$LATEST_TAG \
@@ -64,7 +64,7 @@ jobs:
                      .
         docker push $ECR_REGISTRY/chainlog-checksum-staging --all-tags
         # - chainlog-logger
-        docker pull $ECR_REGISTRY/chainlog-logger-staging:$LATEST_TAG
+        docker pull $ECR_REGISTRY/chainlog-logger-staging:$LATEST_TAG || true
         docker build -t chainlog-logger-staging \
                      -t $ECR_REGISTRY/chainlog-logger-staging:$SHA_TAG \
                      -t $ECR_REGISTRY/chainlog-logger-staging:$LATEST_TAG \
