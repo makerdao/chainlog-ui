@@ -3,7 +3,6 @@ FROM python:3.10
 WORKDIR /usr/app/src
 
 COPY logger.py ./
-ADD api ./api/
 
 RUN pip3 install requests pysha3 eth_utils pygithub
 
