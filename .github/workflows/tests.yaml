@@ -2,6 +2,7 @@ on:
   push:
     branches-ignore:
       - main
+      - dev
 
 name: Build and test containers
 
