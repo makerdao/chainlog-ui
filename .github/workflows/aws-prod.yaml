@@ -9,6 +9,7 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
+    environment: production
     env:
       AWS_REGION: us-east-1
       CLUSTER_NAME: chainlog-prod
@@ -20,8 +21,8 @@ jobs:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        aws-access-key-id: ${{ secrets.PROD_AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.PROD_AWS_SECRET_ACCESS_KEY }}
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
 
     - name: Login to Amazon ECR
@@ -45,7 +46,7 @@ jobs:
         # Build Docker containers and
         # push them to ECR:
         # - chainlog-ui
-        docker pull $ECR_REGISTRY/chainlog-ui-prod:$LATEST_TAG
+        docker pull $ECR_REGISTRY/chainlog-ui-prod:$LATEST_TAG || true
         docker build -t chainlog-ui-prod \
                      -t $ECR_REGISTRY/chainlog-ui-prod:$SHA_TAG \
                      -t $ECR_REGISTRY/chainlog-ui-prod:$LATEST_TAG \
@@ -54,7 +55,7 @@ jobs:
                      .
         docker push $ECR_REGISTRY/chainlog-ui-prod --all-tags
         # - chainlog-checksum
-        docker pull $ECR_REGISTRY/chainlog-checksum-prod:$LATEST_TAG
+        docker pull $ECR_REGISTRY/chainlog-checksum-prod:$LATEST_TAG || true
         docker build -t chainlog-checksum-prod \
                      -t $ECR_REGISTRY/chainlog-checksum-prod:$SHA_TAG \
                      -t $ECR_REGISTRY/chainlog-checksum-prod:$LATEST_TAG \
@@ -63,7 +64,7 @@ jobs:
                      .
         docker push $ECR_REGISTRY/chainlog-checksum-prod --all-tags
         # - chainlog-logger
-        docker pull $ECR_REGISTRY/chainlog-logger-prod:$LATEST_TAG
+        docker pull $ECR_REGISTRY/chainlog-logger-prod:$LATEST_TAG || true
         docker build -t chainlog-logger-prod \
                      -t $ECR_REGISTRY/chainlog-logger-prod:$SHA_TAG \
                      -t $ECR_REGISTRY/chainlog-logger-prod:$LATEST_TAG \
