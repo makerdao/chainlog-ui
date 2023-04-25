@@ -36,8 +36,8 @@ env:
   INFURA_KEY:
     type: parameterStore
     name: infura-key
-    parameter_name: /staging/chainlog-logger/infura-key
+    parameter_name: /eks/maker-staging/chainlog-logger/infura-key
   GITHUB_TOKEN:
     type: parameterStore
-    name: infura-key
-    parameter_name: /staging/chainlog-logger/github-token
+    name: github-token
+    parameter_name: /eks/maker-staging/chainlog-logger/github-token
