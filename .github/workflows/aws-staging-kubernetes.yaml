@@ -73,13 +73,17 @@ jobs:
                      .
         docker push $ECR_REGISTRY/chainlog-logger-staging --all-tags
 
+    - name: Configure AWS credentials to connect to EKS cluster
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.EKS_AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.EKS_AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
     - name: Deploying Chainlog UI to Kubernetes with Helm
       uses: bitovi/github-actions-deploy-eks-helm@v1.2.3
       with:
         values: image.repository=${{ steps.login-ecr.outputs.registry }}/chainlog-ui-staging,image.tag=${{ steps.vars.outputs.sha_short }}
-        aws-access-key-id: ${{ secrets.EKS_AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.EKS_AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.AWS_REGION }}
         cluster-name: ${{ env.CLUSTER_NAME }}
         config-files: deploy/staging/chainlog-ui.yaml
         chart-path: makerops/common
@@ -94,9 +98,6 @@ jobs:
       uses: bitovi/github-actions-deploy-eks-helm@v1.2.3
       with:
         values: image.repository=${{ steps.login-ecr.outputs.registry }}/chainlog-logger-staging,image.tag=${{ steps.vars.outputs.sha_short }}
-        aws-access-key-id: ${{ secrets.EKS_AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.EKS_AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.AWS_REGION }}
         cluster-name: ${{ env.CLUSTER_NAME }}
         config-files: deploy/staging/chainlog-logger.yaml
         chart-path: makerops/common
