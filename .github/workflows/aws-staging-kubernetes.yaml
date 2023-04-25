@@ -75,12 +75,17 @@ jobs:
 
     - name: debugging
       run: |
-        echo "AWS_ROLE_ARN start"
-        echo ${{ secrets.AWS_ROLE_ARN }}
-        echo "AWS_ROLE_ARN finish"
         echo "AWS_ROLE_ARN md5 start"
         echo -n "${{ secrets.AWS_ROLE_ARN }}"|md5sum
         echo "AWS_ROLE_ARN md5 finish"
+
+        echo "AWS_ACCESS_KEY_ID md5 start"
+        echo -n "${{ secrets.AWS_ACCESS_KEY_ID }}"|md5sum
+        echo "AWS_ACCESS_KEY_ID md5 finish"
+
+        echo "AWS_SECRET_ACCESS_KEY md5 start"
+        echo -n "${{ secrets.AWS_SECRET_ACCESS_KEY }}"|md5sum
+        echo "AWS_SECRET_ACCESS_KEY md5 finish"
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v2
@@ -89,6 +94,9 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
         role-to-assume:  ${{ secrets.AWS_ROLE_ARN }}
+
+    - name: whoami
+      run: aws sts get-caller-identity
 
     - name: Deploying Chainlog UI to Kubernetes with Helm
       uses: bitovi/github-actions-deploy-eks-helm@v1.2.3
