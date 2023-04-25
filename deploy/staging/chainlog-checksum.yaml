@@ -1,10 +1,10 @@
 replicaCount: 1
 service:
-  name: chainlog-logger
+  name: chainlog-checksum
   tls:
     enabled: false
 image:
-  repository: 068992353948.dkr.ecr.eu-central-1.amazonaws.com/chainlog-logger-staging
+  repository: 068992353948.dkr.ecr.eu-central-1.amazonaws.com/chainlog-checksum-staging
   pullPolicy: IfNotPresent
   tag: staging
 serviceAccount:
@@ -27,17 +27,6 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   targetMemoryUtilizationPercentage: 60
 env:
-  CHAINLOG_REPO:
-    type: kv
-    value: "makerdao/chainlog-ui"
   PYTHONUNBUFFERED:
     type: kv
     value: "1"
-  INFURA_KEY:
-    type: parameterStore
-    name: infura-key
-    parameter_name: /staging/chainlog-logger/infura-key
-  GITHUB_TOKEN:
-    type: parameterStore
-    name: infura-key
-    parameter_name: /staging/chainlog-logger/github-token

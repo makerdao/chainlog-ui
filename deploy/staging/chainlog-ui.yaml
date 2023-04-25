@@ -31,3 +31,7 @@ autoscaling:
   maxReplicas: 2
   targetCPUUtilizationPercentage: 80
   targetMemoryUtilizationPercentage: 60
+env:
+  CHECKSUM_CONTAINER_NAME:
+    type: kv
+    value: "localhost"
