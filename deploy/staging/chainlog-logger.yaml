@@ -1,6 +1,9 @@
 replicaCount: 1
 service:
   name: chainlog-logger
+  port: 8080
+  type: ClusterIP
+  containerPort: 8080
   tls:
     enabled: false
 image:
@@ -41,3 +44,5 @@ env:
     type: parameterStore
     name: github-token
     parameter_name: /eks/maker-staging/chainlog-logger/github-token
+externalSecrets:
+  clusterSecretStoreName: maker-staging
