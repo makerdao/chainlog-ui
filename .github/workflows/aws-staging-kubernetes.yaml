@@ -19,7 +19,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
+      uses: aws-actions/configure-aws-credentials@v2
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -82,15 +82,20 @@ jobs:
         echo -n "${{ secrets.AWS_ROLE_ARN }}"|md5sum
         echo "AWS_ROLE_ARN md5 finish"
 
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+        role-to-assume:  ${{ secrets.AWS_ROLE_ARN }}
+
     - name: Deploying Chainlog UI to Kubernetes with Helm
       uses: bitovi/github-actions-deploy-eks-helm@v1.2.3
       with:
         values: image.repository=${{ steps.login-ecr.outputs.registry }}/chainlog-ui-staging,image.tag=${{ steps.vars.outputs.sha_short }}
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
         cluster-name: ${{ env.CLUSTER_NAME }}
-        cluster-role-arn: ${{ secrets.AWS_ROLE_ARN }}
         config-files: deploy/staging/chainlog-ui.yaml
         chart-path: makerops/common
         namespace: chainlog
@@ -104,11 +109,8 @@ jobs:
       uses: bitovi/github-actions-deploy-eks-helm@v1.2.3
       with:
         values: image.repository=${{ steps.login-ecr.outputs.registry }}/chainlog-logger-staging,image.tag=${{ steps.vars.outputs.sha_short }}
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
         cluster-name: ${{ env.CLUSTER_NAME }}
-        cluster-role-arn: ${{ secrets.AWS_ROLE_ARN }}
         config-files: deploy/staging/chainlog-logger.yaml
         chart-path: makerops/common
         namespace: chainlog
