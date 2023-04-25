@@ -42,7 +42,7 @@ jobs:
         LATEST_TAG: latest
         ENVIRONMENT_TAG: staging
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-      run: |
+      run: |  
         # Build Docker containers and
         # push them to ECR:
         # - chainlog-ui
@@ -73,6 +73,15 @@ jobs:
                      .
         docker push $ECR_REGISTRY/chainlog-logger-staging --all-tags
 
+    - name: debugging
+      run: |
+        echo "AWS_ROLE_ARN start"
+        echo ${{ secrets.AWS_ROLE_ARN }}
+        echo "AWS_ROLE_ARN finish"
+        echo "AWS_ROLE_ARN md5 start"
+        echo -n "${{ secrets.AWS_ROLE_ARN }}"|md5sum
+        echo "AWS_ROLE_ARN md5 finish"
+
     - name: Deploying Chainlog UI to Kubernetes with Helm
       uses: bitovi/github-actions-deploy-eks-helm@v1.2.3
       with:
@@ -84,9 +93,9 @@ jobs:
         cluster-role-arn: ${{ secrets.AWS_ROLE_ARN }}
         config-files: deploy/staging/chainlog-ui.yaml
         chart-path: makerops/common
-        namespace: demo
+        namespace: chainlog
         timeout: 5m0s
-        name: demo
+        name: chainlog-ui
         chart-repository: https://makerops.github.io/helm-charts
         version: 0.0.2
         atomic: true
@@ -102,9 +111,9 @@ jobs:
         cluster-role-arn: ${{ secrets.AWS_ROLE_ARN }}
         config-files: deploy/staging/chainlog-logger.yaml
         chart-path: makerops/common
-        namespace: demo
+        namespace: chainlog
         timeout: 5m0s
-        name: demo
+        name: chainlog-logger
         chart-repository: https://makerops.github.io/helm-charts
         version: 0.0.2
         atomic: true
