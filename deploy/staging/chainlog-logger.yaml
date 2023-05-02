@@ -46,3 +46,19 @@ env:
     parameter_name: /eks/maker-staging/chainlog-logger/github-token
 externalSecrets:
   clusterSecretStoreName: maker-staging
+livenessProbe:
+  exec:
+    command:
+      - /bin/bash
+      - -c
+      - ps -ef | grep logger.py | grep -v grep
+  initialDelaySeconds: 5
+  periodSeconds: 30
+readinessProbe:
+  exec:
+    command:
+      - /bin/bash
+      - -c
+      - ps -ef | grep logger.py | grep -v grep
+  initialDelaySeconds: 5
+  periodSeconds: 30
