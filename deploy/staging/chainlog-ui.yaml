@@ -35,3 +35,9 @@ env:
   CHECKSUM_CONTAINER_NAME:
     type: kv
     value: "localhost"
+readinessProbe:
+  tcpSocket:
+    port: 80
+livenessProbe:
+  tcpSocket:
+    port: 80
