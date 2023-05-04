@@ -7,7 +7,7 @@ service:
   tls:
     enabled: false
 image:
-  repository: 068992353948.dkr.ecr.eu-central-1.amazonaws.com/chainlog-logger-staging
+  repository: ${ECR_REGISTRY}/chainlog-logger-staging
   pullPolicy: IfNotPresent
   tag: staging
 serviceAccount:

@@ -8,7 +8,7 @@ service:
     enabled: true
     issuerName: cloudflare
 image:
-  repository: 068992353948.dkr.ecr.eu-central-1.amazonaws.com/chainlog-ui-staging
+  repository: ${ECR_REGISTRY}/chainlog-ui-staging
   pullPolicy: IfNotPresent
   tag: staging
 serviceAccount:

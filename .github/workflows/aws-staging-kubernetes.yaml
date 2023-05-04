@@ -73,6 +73,14 @@ jobs:
                      .
         docker push $ECR_REGISTRY/chainlog-logger-staging --all-tags
 
+    - name: Preparing Helm values files
+      id: preparing-helm-values
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      run: |
+        envsubst < deploy/staging/chainlog-ui.yaml | sponge deploy/staging/chainlog-ui.yaml
+        envsubst < deploy/staging/chainlog-logger.yaml | sponge deploy/staging/chainlog-logger.yaml
+
     - name: Configure AWS credentials to connect to EKS cluster
       uses: aws-actions/configure-aws-credentials@v2
       with:
