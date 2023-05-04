@@ -78,8 +78,8 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       run: |
-        envsubst < deploy/staging/chainlog-ui.yaml | sponge deploy/staging/chainlog-ui.yaml
-        envsubst < deploy/staging/chainlog-logger.yaml | sponge deploy/staging/chainlog-logger.yaml
+        sed -i 's/${ECR_REGISTRY}/'$(echo $ECR_REGISTRY)/ deploy/staging/chainlog-logger.yaml
+        sed -i 's/${ECR_REGISTRY}/'$(echo $ECR_REGISTRY)/ deploy/staging/chainlog-ui.yaml
 
     - name: Configure AWS credentials to connect to EKS cluster
       uses: aws-actions/configure-aws-credentials@v2
