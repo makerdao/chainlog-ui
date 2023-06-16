@@ -15,7 +15,7 @@ serviceAccount:
   create: false
 ingress:
   enabled: true
-  host: chainlog-staging-k8s.makerdao.com
+  host: chainlog-staging.makerdao.com
   annotations:
     external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
 podAnnotations:
