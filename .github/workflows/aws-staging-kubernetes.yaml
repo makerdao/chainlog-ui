@@ -99,7 +99,7 @@ jobs:
         timeout: 5m0s
         name: chainlog-ui
         chart-repository: https://makerops.github.io/helm-charts
-        version: 0.0.7
+        version: 0.0.10
         atomic: true
 
     - name: Deploying Chainlog Logger to Kubernetes with Helm
@@ -113,6 +113,6 @@ jobs:
         timeout: 5m0s
         name: chainlog-logger
         chart-repository: https://makerops.github.io/helm-charts
-        version: 0.0.7
+        version: 0.0.10
         atomic: true
 

@@ -16,6 +16,8 @@ serviceAccount:
 ingress:
   enabled: true
   host: chainlog-staging-k8s.makerdao.com
+  annotations:
+    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
 podAnnotations:
   reloader.stakater.com/auto: "true"
 resources:
