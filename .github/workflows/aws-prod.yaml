@@ -2,7 +2,6 @@ on:
   push:
     branches:
       - main
-      - TECH-1771
 
 name: Deploy to AWS Production (K8s)
 
