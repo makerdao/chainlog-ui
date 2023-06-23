@@ -1,6 +1,7 @@
 FROM nginx:1.21
 
-COPY api.html \
+COPY api \
+     api.html \
      index.html \
      index.ipfs.html \
      /usr/share/nginx/html/
