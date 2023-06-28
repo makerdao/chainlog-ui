@@ -8,7 +8,7 @@ service:
     enabled: false
 image:
   repository: ${ECR_REGISTRY}/chainlog-logger-prod
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   tag: prod
 serviceAccount:
   create: false
