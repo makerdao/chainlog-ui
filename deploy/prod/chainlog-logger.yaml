@@ -7,9 +7,9 @@ service:
   tls:
     enabled: false
 image:
-  repository: ${ECR_REGISTRY}/chainlog-logger-staging
-  pullPolicy: IfNotPresent
-  tag: staging
+  repository: ${ECR_REGISTRY}/chainlog-logger-prod
+  pullPolicy: Always
+  tag: prod
 serviceAccount:
   create: false
 ingress:
@@ -18,11 +18,11 @@ podAnnotations:
   reloader.stakater.com/auto: "true"
 resources:
   limits:
-    cpu: 200m
-    memory: 256Mi
+    cpu: 1
+    memory: 1024Mi
   requests:
-    cpu: 100m
-    memory: 128Mi
+    cpu: 250m
+    memory: 512Mi
 autoscaling:
   enabled: false
 env:
@@ -35,13 +35,13 @@ env:
   INFURA_KEY:
     type: parameterStore
     name: infura-key
-    parameter_name: /eks/maker-staging/chainlog-logger/infura-key
+    parameter_name: /eks/maker-prod/chainlog-logger/infura-key
   GITHUB_TOKEN:
     type: parameterStore
     name: github-token
-    parameter_name: /eks/maker-staging/chainlog-logger/github-token
+    parameter_name: /eks/maker-prod/chainlog-logger/github-token
 externalSecrets:
-  clusterSecretStoreName: maker-staging
+  clusterSecretStoreName: maker-prod
 livenessProbe:
   exec:
     command:
