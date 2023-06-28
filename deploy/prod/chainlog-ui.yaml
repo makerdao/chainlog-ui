@@ -9,7 +9,7 @@ service:
     issuerName: cloudflare
 image:
   repository: ${ECR_REGISTRY}/chainlog-ui-prod
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   tag: prod
 serviceAccount:
   create: false
