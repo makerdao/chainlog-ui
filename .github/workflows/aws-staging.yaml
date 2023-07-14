@@ -3,7 +3,7 @@ on:
     branches:
       - dev
 
-name: Deploy to AWS Staging
+name: Deploy to AWS Staging (K8s)
 
 jobs:
   deploy:
@@ -12,17 +12,17 @@ jobs:
     environment: staging
     env:
       AWS_REGION: eu-central-1
-      CLUSTER_NAME: chainlog-staging
+      CLUSTER_NAME: maker-staging
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
+      uses: aws-actions/configure-aws-credentials@v2
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-access-key-id: ${{ secrets.EKS_AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.EKS_AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
 
     - name: Login to Amazon ECR
@@ -42,7 +42,7 @@ jobs:
         LATEST_TAG: latest
         ENVIRONMENT_TAG: staging
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-      run: |
+      run: |  
         # Build Docker containers and
         # push them to ECR:
         # - chainlog-ui
@@ -73,14 +73,39 @@ jobs:
                      .
         docker push $ECR_REGISTRY/chainlog-logger-staging --all-tags
 
-    - name: Update ECS service with latest Docker image
-      id: service-update
+    - name: Preparing Helm values files
+      id: preparing-helm-values
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       run: |
-        aws ecs update-service --cluster $CLUSTER_NAME --service chainlog-ui-staging --force-new-deployment --region $AWS_REGION > /dev/null
-        aws ecs update-service --cluster $CLUSTER_NAME --service chainlog-logger-staging --force-new-deployment --region $AWS_REGION > /dev/null
+        sed -i 's/${ECR_REGISTRY}/'$(echo $ECR_REGISTRY)/ deploy/staging/chainlog-logger.yaml
+        sed -i 's/${ECR_REGISTRY}/'$(echo $ECR_REGISTRY)/ deploy/staging/chainlog-ui.yaml
 
-    - name: Wait for all services to become stable
-      uses: oryanmoshe/ecs-wait-action@v1.3
+    - name: Deploying Chainlog UI to Kubernetes with Helm
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.4
       with:
-        ecs-cluster: ${{ env.CLUSTER_NAME }}
-        ecs-services: '["chainlog-ui-staging", "chainlog-logger-staging"]'
+        values: image.repository=${{ steps.login-ecr.outputs.registry }}/chainlog-ui-staging,image.tag=${{ steps.vars.outputs.sha_short }}
+        cluster-name: ${{ env.CLUSTER_NAME }}
+        config-files: deploy/staging/chainlog-ui.yaml
+        chart-path: makerops/common
+        namespace: chainlog
+        timeout: 5m0s
+        name: chainlog-ui
+        chart-repository: https://makerops.github.io/helm-charts
+        version: 0.0.10
+        atomic: true
+
+    - name: Deploying Chainlog Logger to Kubernetes with Helm
+      uses: bitovi/github-actions-deploy-eks-helm@v1.2.4
+      with:
+        values: image.repository=${{ steps.login-ecr.outputs.registry }}/chainlog-logger-staging,image.tag=${{ steps.vars.outputs.sha_short }}
+        cluster-name: ${{ env.CLUSTER_NAME }}
+        config-files: deploy/staging/chainlog-logger.yaml
+        chart-path: makerops/common
+        namespace: chainlog
+        timeout: 5m0s
+        name: chainlog-logger
+        chart-repository: https://makerops.github.io/helm-charts
+        version: 0.0.10
+        atomic: true
+

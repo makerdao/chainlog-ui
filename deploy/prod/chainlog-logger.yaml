@@ -1,0 +1,60 @@
+replicaCount: 1
+service:
+  name: chainlog-logger
+  port: 8080
+  type: ClusterIP
+  containerPort: 8080
+  tls:
+    enabled: false
+image:
+  repository: ${ECR_REGISTRY}/chainlog-logger-prod
+  pullPolicy: Always
+  tag: prod
+serviceAccount:
+  create: false
+ingress:
+  enabled: false
+podAnnotations:
+  reloader.stakater.com/auto: "true"
+resources:
+  limits:
+    cpu: 1
+    memory: 1024Mi
+  requests:
+    cpu: 250m
+    memory: 512Mi
+autoscaling:
+  enabled: false
+env:
+  CHAINLOG_REPO:
+    type: kv
+    value: "makerdao/chainlog-ui"
+  PYTHONUNBUFFERED:
+    type: kv
+    value: "1"
+  INFURA_KEY:
+    type: parameterStore
+    name: infura-key
+    parameter_name: /eks/maker-prod/chainlog-logger/infura-key
+  GITHUB_TOKEN:
+    type: parameterStore
+    name: github-token
+    parameter_name: /eks/maker-prod/chainlog-logger/github-token
+externalSecrets:
+  clusterSecretStoreName: maker-prod
+livenessProbe:
+  exec:
+    command:
+      - /bin/bash
+      - -c
+      - ps -ef | grep logger.py | grep -v grep
+  initialDelaySeconds: 5
+  periodSeconds: 30
+readinessProbe:
+  exec:
+    command:
+      - /bin/bash
+      - -c
+      - ps -ef | grep logger.py | grep -v grep
+  initialDelaySeconds: 5
+  periodSeconds: 30

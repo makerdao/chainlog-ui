@@ -1,0 +1,45 @@
+replicaCount: 1
+service:
+  name: chainlog-ui
+  port: 80
+  type: ClusterIP
+  containerPort: 80
+  tls:
+    enabled: true
+    issuerName: cloudflare
+image:
+  repository: ${ECR_REGISTRY}/chainlog-ui-staging
+  pullPolicy: IfNotPresent
+  tag: staging
+serviceAccount:
+  create: false
+ingress:
+  enabled: true
+  host: chainlog-staging.makerdao.com
+  annotations:
+    external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
+podAnnotations:
+  reloader.stakater.com/auto: "true"
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 2
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 60
+env:
+  CHECKSUM_CONTAINER_NAME:
+    type: kv
+    value: "localhost"
+readinessProbe:
+  tcpSocket:
+    port: 80
+livenessProbe:
+  tcpSocket:
+    port: 80
