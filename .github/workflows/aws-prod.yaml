@@ -87,11 +87,11 @@ jobs:
         values: image.repository=${{ steps.login-ecr.outputs.registry }}/chainlog-ui-prod,image.tag=${{ steps.vars.outputs.sha_short }}
         cluster-name: ${{ env.CLUSTER_NAME }}
         config-files: deploy/prod/chainlog-ui.yaml
-        chart-path: makerops/common
+        chart-path: techops-services/common
         namespace: chainlog
         timeout: 5m0s
         name: chainlog-ui
-        chart-repository: https://makerops.github.io/helm-charts
+        chart-repository: https://techops-services.github.io/helm-charts
         version: 0.0.10
         atomic: true
 
@@ -101,11 +101,11 @@ jobs:
         values: image.repository=${{ steps.login-ecr.outputs.registry }}/chainlog-logger-prod,image.tag=${{ steps.vars.outputs.sha_short }}
         cluster-name: ${{ env.CLUSTER_NAME }}
         config-files: deploy/prod/chainlog-logger.yaml
-        chart-path: makerops/common
+        chart-path: techops-services/common
         namespace: chainlog
         timeout: 5m0s
         name: chainlog-logger
-        chart-repository: https://makerops.github.io/helm-charts
+        chart-repository: https://techops-services.github.io/helm-charts
         version: 0.0.10
         atomic: true
 
