@@ -82,7 +82,7 @@ def update(chain):
         contents = json.dumps(log, indent=2)
         log_file.write(contents)
         log_file.close()
-        message = "feat: add chainlog file for {} v{}".format(chain, version)
+        message = "[skip ci] feat: add chainlog file for {} v{}".format(chain, version)
         push(path, contents, message)
         active_path = "api/{}/active.json".format(chain)
         active_file = open(active_path, "w")
