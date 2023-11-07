@@ -1,9 +1,6 @@
 replicaCount: 1
 service:
   enabled: false
-  type: ClusterIP
-  tls:
-    enabled: false
 deployment:
   enabled: true
 image:
