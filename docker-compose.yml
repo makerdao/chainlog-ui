@@ -10,7 +10,7 @@ services:
     environment:
       CHECKSUM_CONTAINER_NAME: checksum
     ports:
-      - "0.0.0.0:8080:80/tcp"
+      - "0.0.0.0:8080:8080/tcp"
     volumes:
       - ./api:/usr/share/nginx/html/api
   logger:

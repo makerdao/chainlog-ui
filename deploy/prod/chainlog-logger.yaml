@@ -1,11 +1,8 @@
 replicaCount: 1
 service:
-  name: chainlog-logger
-  port: 8080
-  type: ClusterIP
-  containerPort: 8080
-  tls:
-    enabled: false
+  enabled: false
+deployment:
+  enabled: true
 image:
   repository: ${ECR_REGISTRY}/chainlog-logger-prod
   pullPolicy: Always
