@@ -92,7 +92,7 @@ jobs:
         timeout: 5m0s
         name: chainlog-ui
         chart-repository: https://techops-services.github.io/helm-charts
-        version: 0.0.10
+        version: 0.0.19
         atomic: true
 
     - name: Deploying Chainlog Logger to Kubernetes with Helm
