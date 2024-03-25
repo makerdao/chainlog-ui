@@ -2,6 +2,7 @@ on:
   push:
     branches:
       - dev
+      - TECH-3019-Turn-off-chainlog-staging-until-next-steps-are-known
 
 name: Deploy to AWS Staging (K8s)
 
