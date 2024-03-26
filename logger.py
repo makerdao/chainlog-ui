@@ -105,7 +105,7 @@ def update(chain):
 
 g = Github(os.environ["GITHUB_TOKEN"])
 repo = g.get_repo(os.environ["CHAINLOG_REPO"])
-chains = ["mainnet", "goerli"]
+chains = ["mainnet"]
 while True:
     for chain in chains:
         update(chain)
