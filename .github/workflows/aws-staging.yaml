@@ -2,7 +2,6 @@ on:
   push:
     branches:
       - dev
-      - TECH-3252-update-iam
 
 name: Deploy to AWS Staging (K8s)
 
