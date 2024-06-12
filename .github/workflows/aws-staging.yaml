@@ -26,7 +26,7 @@ jobs:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
-        role-to-assume: ${{ secrets.GA_OIDC_LAMBDA_PROD }}
+        role-to-assume: ${{ secrets.GA_OIDC_EKS_STAGING }}
         role-session-name: chainlog-staging
         aws-region: ${{ env.AWS_REGION }}
 
