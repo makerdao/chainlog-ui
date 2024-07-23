@@ -87,6 +87,8 @@ jobs:
         sed -i 's/${ECR_REGISTRY}/'$(echo $ECR_REGISTRY)/ deploy/prod/chainlog-ui.yaml
 
     - name: Deploying Chainlog UI to Kubernetes with Helm
+      env:
+        APP_NAME: chainlog-ui
       uses: bitovi/github-actions-deploy-eks-helm@v1.2.4
       with:
         values: image.repository=${{ steps.login-ecr.outputs.registry }}/chainlog-ui-prod,image.tag=${{ steps.vars.outputs.sha_short }}

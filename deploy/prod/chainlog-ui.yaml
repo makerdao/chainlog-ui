@@ -36,6 +36,8 @@ autoscaling:
   maxReplicas: 3
   targetCPUUtilizationPercentage: 80
   targetMemoryUtilizationPercentage: 60
+externalSecrets:
+  clusterSecretStoreName: ${CLUSTER_NAME}
 env:
   CHECKSUM_CONTAINER_NAME:
     type: kv
