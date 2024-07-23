@@ -1,10 +1,23 @@
-FROM nginx:1.25
+FROM node:20
 
-COPY api.html \
-     index.html \
-     index.ipfs.html \
-     /usr/share/nginx/html/
+# Set the working directory
+WORKDIR /usr/src/app
 
-COPY api /usr/share/nginx/html/api
+# Copy package.json and package-lock.json
+COPY package*.json ./
 
-COPY ./nginx/nginx.conf.template /etc/nginx/templates/default.conf.template
+# Install the dependencies
+RUN npm install
+
+# Copy only the necessary files
+COPY server.js server.js
+COPY public public
+
+# Expose the port the app runs on
+EXPOSE 8080
+
+# Define environment variable
+ENV NODE_ENV=production
+
+# Start the app
+CMD ["npm", "start"]

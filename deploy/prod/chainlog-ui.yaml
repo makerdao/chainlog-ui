@@ -40,6 +40,18 @@ env:
   CHECKSUM_CONTAINER_NAME:
     type: kv
     value: "localhost"
+  IPFS-CID:
+    type: parameterStore
+    name: ipfs-cid
+    parameter_name: /eks/${CLUSTER_NAME}/${APP_NAME}/ipfs-cid
+  INFURA_API_KEY:
+    type: parameterStore
+    name: infura-api-key
+    parameter_name: /eks/${CLUSTER_NAME}/${APP_NAME}/infura-api-key
+  ETHERSCAN_API_KEY:
+    type: parameterStore
+    name: etherscan-api-key
+    parameter_name: /eks/${CLUSTER_NAME}/${APP_NAME}/etherscan-api-key
 readinessProbe:
   tcpSocket:
     port: 8080
