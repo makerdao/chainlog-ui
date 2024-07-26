@@ -82,13 +82,15 @@ jobs:
       id: preparing-helm-values
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        CLUSTER_NAME: ${{ env.CLUSTER_NAME }}
+        APP_NAME: chainlog-ui
       run: |
         sed -i 's/${ECR_REGISTRY}/'$(echo $ECR_REGISTRY)/ deploy/prod/chainlog-logger.yaml
         sed -i 's/${ECR_REGISTRY}/'$(echo $ECR_REGISTRY)/ deploy/prod/chainlog-ui.yaml
+        sed -i 's/${CLUSTER_NAME}/'$(echo $CLUSTER_NAME)/ deploy/prod/chainlog-ui.yaml
+        sed -i 's/${APP_NAME}/'$(echo $APP_NAME)/ deploy/prod/chainlog-ui.yaml
 
     - name: Deploying Chainlog UI to Kubernetes with Helm
-      env:
-        APP_NAME: chainlog-ui
       uses: bitovi/github-actions-deploy-eks-helm@v1.2.4
       with:
         values: image.repository=${{ steps.login-ecr.outputs.registry }}/chainlog-ui-prod,image.tag=${{ steps.vars.outputs.sha_short }}
