@@ -1,10 +1,11 @@
 FROM python:3.10
 
-WORKDIR /usr/app/src
-
-COPY logger.py ./
-COPY public/api ./api
+WORKDIR /usr/app
 
 RUN pip3 install requests pysha3 eth_utils pygithub
+
+COPY logger.py ./
+
+COPY ./public/api /usr/app/api
 
 CMD [ "python", "./logger.py"]
