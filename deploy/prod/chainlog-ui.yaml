@@ -42,7 +42,7 @@ env:
   CHECKSUM_CONTAINER_NAME:
     type: kv
     value: "localhost"
-  IPFS-CID:
+  IPFS_CID:
     type: parameterStore
     name: ipfs-cid
     parameter_name: /eks/${CLUSTER_NAME}/${APP_NAME}/ipfs-cid
