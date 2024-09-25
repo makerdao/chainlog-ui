@@ -22,7 +22,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       working-directory: ./
       run: |
-        docker-compose up -d
+        docker compose up -d
         sleep 10
         docker ps | grep chainlog-ui
         docker ps | grep chainlog-logger || (docker logs chainlog-logger && exit 1)
