@@ -3,9 +3,9 @@ UI and API for MakerDAO’s chainlog contract
 
 ## Production environment
 
-* [chainlog.makerdao.com](https://chainlog.makerdao.com)
-* [chainlog.makerdao.com/api.html](https://chainlog.makerdao.com/api.html)
-* chainlog.makerdao.com/checksum/\<address\>
+* [chainlog.sky.money](https://chainlog.sky.money)
+* [chainlog.sky.money/api.html](https://chainlog.sky.money/api.html)
+* chainlog.sky.money/checksum/\<address\>
 
 ## Staging environment
 

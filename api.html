@@ -10,15 +10,15 @@
         <h1>Chainlog historical API</h1>
         <h2>Usage</h2>
         <h3>Get a list of all available chains and versions</h3>
-        <pre>GET <a href="https://chainlog.makerdao.com/api/index.json">https://chainlog.makerdao.com/api/index.json</a></pre>
+        <pre>GET <a href="https://chainlog.sky.money/api/index.json">https://chainlog.sky.money/api/index.json</a></pre>
         <h3>Get the active version on a given chain</h3>
-        <pre>GET https://chainlog.makerdao.com/api/{chain}/active.json</pre>
+        <pre>GET https://chainlog.sky.money/api/{chain}/active.json</pre>
         <h3>Get a specific version on a given chain</h3>
-        <pre>GET https://chainlog.makerdao.com/api/{chain}/{version}.json</pre>
+        <pre>GET https://chainlog.sky.money/api/{chain}/{version}.json</pre>
         <h2>Code examples</h2>
         You can set your JavaScript app to use this API <a href="https://github.com/makerdao/chainlog-ui/blob/main/examples/api.js">in the following way</a>:
         <pre>
-  const url = "https://chainlog.makerdao.com/api/mainnet/active.json";
+  const url = "https://chainlog.sky.money/api/mainnet/active.json";
   const response = await fetch(url);
   const chainlog = await response.json();
   console.log(chainlog);
@@ -71,8 +71,8 @@
         The above code has the advantage that it will allow you to retreive historical data as long as you are using an archival node. In order to do that, replace <code>"latest"</code> with a specific block number.
         <h2>Available resources in this API</h2>
         <pre>
-https://chainlog.makerdao.com/api
-├── <a href="https://chainlog.makerdao.com/api/index.json">index.json</a>
+https://chainlog.sky.money/api
+├── <a href="https://chainlog.sky.money/api/index.json">index.json</a>
 <div id="canvas"></div>
         </pre>
         <script>

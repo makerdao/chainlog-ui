@@ -18,7 +18,7 @@ serviceAccount:
   create: false
 ingress:
   enabled: true
-  host: chainlog.makerdao.com
+  host: chainlog.sky.money
   annotations:
     external-dns.alpha.kubernetes.io/cloudflare-proxied: "true"
 podAnnotations:
