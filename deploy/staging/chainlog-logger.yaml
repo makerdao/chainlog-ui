@@ -47,6 +47,7 @@ livenessProbe:
       - ps -ef | grep logger.py | grep -v grep
   initialDelaySeconds: 5
   periodSeconds: 30
+  timeoutSeconds: 5
 readinessProbe:
   exec:
     command:
@@ -55,3 +56,4 @@ readinessProbe:
       - ps -ef | grep logger.py | grep -v grep
   initialDelaySeconds: 5
   periodSeconds: 30
+  timeoutSeconds: 5
