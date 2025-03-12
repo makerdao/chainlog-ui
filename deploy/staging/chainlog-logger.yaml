@@ -49,6 +49,7 @@ livenessProbe:
   periodSeconds: 30
   timeoutSeconds: 15
   failureThreshold: 3
+readinessProbe:
   exec:
     command:
       - /bin/bash
