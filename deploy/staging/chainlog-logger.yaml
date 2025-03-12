@@ -45,15 +45,16 @@ livenessProbe:
       - /bin/bash
       - -c
       - ps -ef | grep logger.py | grep -v grep
-  initialDelaySeconds: 5
+  initialDelaySeconds: 15
   periodSeconds: 30
-  timeoutSeconds: 5
-readinessProbe:
+  timeoutSeconds: 15
+  failureThreshold: 3
   exec:
     command:
       - /bin/bash
       - -c
       - ps -ef | grep logger.py | grep -v grep
-  initialDelaySeconds: 5
+  initialDelaySeconds: 15
   periodSeconds: 30
-  timeoutSeconds: 5
+  timeoutSeconds: 15
+  failureThreshold: 3
